@@ -10,7 +10,9 @@
       text-align: center;
       padding: 16px;
       background: #f7f7f7;
+      margin: 0;
     }
+
     #reader {
       max-width: 420px;
       margin: 20px auto;
@@ -18,7 +20,8 @@
       padding: 12px;
       border-radius: 12px;
     }
-    #status, #confirmBox {
+
+    #status {
       max-width: 420px;
       margin: 16px auto;
       padding: 14px;
@@ -28,58 +31,120 @@
       min-height: 28px;
       box-sizing: border-box;
     }
+
     .neutral { background: #e9eefb; color: #1f3b7a; }
     .success { background: #dff6e3; color: #176b2c; }
     .error { background: #fde2e2; color: #9f1d1d; }
-    .hidden { display: none; }
+
+    /* Popup overlay */
+    #popupOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 9999;
+      box-sizing: border-box;
+    }
+
+    #popupBox {
+      width: 100%;
+      max-width: 380px;
+      background: white;
+      border-radius: 18px;
+      padding: 24px 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    #popupTitle {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    #popupMessage {
+      font-size: 18px;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
 
     .btn-wrap {
-      margin-top: 12px;
       display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: nowrap;
     }
+
     button {
+      flex: 1;
       font-size: 16px;
-      padding: 10px 18px;
+      padding: 12px 16px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
+      font-weight: bold;
     }
-    .confirm-btn {
-      background: #176b2c;
-      color: white;
-    }
+
     .cancel-btn {
       background: #9f1d1d;
       color: white;
     }
+
+    .confirm-btn {
+      background: #176b2c;
+      color: white;
+    }
+
+    .single-btn {
+      background: #1f3b7a;
+      color: white;
+      width: 100%;
+    }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
+  <h2>Chatswood High School</h2>
   <h2>QR Check-In Scanner</h2>
 
-  <div id="status" class="neutral">Point the camera at a QR code</div>
+  <div id="status" class="neutral">Put your QR code under the camera</div>
+  <div id="reader"></div>
 
-  <div id="confirmBox" class="neutral hidden">
-    <div id="confirmText"></div>
-    <div class="btn-wrap">
-      <button class="confirm-btn" id="confirmBtn">Confirm Check-In</button>
-      <button class="cancel-btn" id="cancelBtn">Cancel</button>
+  <!-- Popup -->
+  <div id="popupOverlay">
+    <div id="popupBox">
+      <div id="popupTitle">Confirm Check-In</div>
+      <div id="popupMessage">Loading...</div>
+
+      <div id="popupButtons" class="btn-wrap">
+        <button class="cancel-btn" id="cancelBtn">Cancel</button>
+        <button class="confirm-btn" id="confirmBtn">Check In</button>
+      </div>
+
+      <div id="popupSingleButtonWrap" class="hidden">
+        <button class="single-btn" id="okBtn">OK</button>
+      </div>
     </div>
   </div>
-
-  <div id="reader"></div>
 
   <script>
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyRvVYUupmFYA_TqdlGwgUdpOD1vGUYV42cGplkoM8DE49kfJ0j9yDNT1Xc75sJag/exec";
 
     const statusBox = document.getElementById("status");
-    const confirmBox = document.getElementById("confirmBox");
-    const confirmText = document.getElementById("confirmText");
+    const popupOverlay = document.getElementById("popupOverlay");
+    const popupTitle = document.getElementById("popupTitle");
+    const popupMessage = document.getElementById("popupMessage");
+    const popupButtons = document.getElementById("popupButtons");
+    const popupSingleButtonWrap = document.getElementById("popupSingleButtonWrap");
     const confirmBtn = document.getElementById("confirmBtn");
     const cancelBtn = document.getElementById("cancelBtn");
+    const okBtn = document.getElementById("okBtn");
 
     let scanner;
     let busy = false;
@@ -90,22 +155,29 @@
       statusBox.className = type;
     }
 
-    function showConfirm(name, code) {
-      confirmText.textContent = `Check in ${name}?`;
-      confirmBox.className = "neutral";
-      confirmBox.classList.remove("hidden");
-      pendingCode = code;
+    function showPopup(title, message, mode = "confirm") {
+      popupTitle.textContent = title;
+      popupMessage.textContent = message;
+      popupOverlay.style.display = "flex";
+
+      if (mode === "confirm") {
+        popupButtons.classList.remove("hidden");
+        popupSingleButtonWrap.classList.add("hidden");
+      } else {
+        popupButtons.classList.add("hidden");
+        popupSingleButtonWrap.classList.remove("hidden");
+      }
     }
 
-    function hideConfirm() {
-      confirmBox.className = "neutral hidden";
+    function hidePopup() {
+      popupOverlay.style.display = "none";
       pendingCode = "";
     }
 
     async function resumeScanning(delay = 1200) {
       setTimeout(async () => {
         try {
-          hideConfirm();
+          hidePopup();
           await scanner.resume();
           setStatus("Point the camera at a QR code", "neutral");
         } catch (e) {
@@ -167,23 +239,21 @@
       try {
         await scanner.pause(true);
 
+        showPopup("Checking Code", "Loading...", "message");
+
         const result = await lookupCode(decodedText);
 
         if (result.success) {
-          showConfirm(result.name, decodedText);
-          setStatus("Please confirm check-in", "neutral");
+          pendingCode = decodedText;
+          showPopup("Confirm Check-In", `Check in ${result.name}?`, "confirm");
+          setStatus("Student found", "neutral");
         } else {
-          if (result.name) {
-            setStatus(result.error + " (" + result.name + ")", "error");
-          } else {
-            setStatus(result.error, "error");
-          }
-          await resumeScanning(1800);
+          setStatus(result.name ? `${result.error} (${result.name})` : result.error, "error");
+          showPopup("Error", result.name ? `${result.error} (${result.name})` : result.error, "message");
         }
-
       } catch (err) {
         setStatus("Could not connect to Google Sheets", "error");
-        await resumeScanning(1800);
+        showPopup("Error", "Could not connect to Google Sheets", "message");
       }
     }
 
@@ -191,25 +261,30 @@
       if (!pendingCode) return;
 
       try {
+        showPopup("Checking In", "Loading...", "message");
+
         const result = await checkInCode(pendingCode);
 
         if (result.success) {
           setStatus("Checked in: " + result.name, "success");
-        } else if (result.name) {
-          setStatus(result.error + " (" + result.name + ")", "error");
+          showPopup("Success", "Checked in: " + result.name, "message");
         } else {
-          setStatus(result.error, "error");
+          setStatus(result.name ? `${result.error} (${result.name})` : result.error, "error");
+          showPopup("Error", result.name ? `${result.error} (${result.name})` : result.error, "message");
         }
       } catch (err) {
         setStatus("Could not complete check-in", "error");
+        showPopup("Error", "Could not complete check-in", "message");
       }
-
-      await resumeScanning(1800);
     });
 
     cancelBtn.addEventListener("click", async () => {
       setStatus("Check-in cancelled", "error");
-      await resumeScanning(1000);
+      showPopup("Cancelled", "Check-in cancelled", "message");
+    });
+
+    okBtn.addEventListener("click", async () => {
+      await resumeScanning(300);
     });
 
     startScanner();
