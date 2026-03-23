@@ -1,189 +1,724 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>QR Check-In Scanner</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Check-In</title>
   <script src="https://unpkg.com/html5-qrcode"></script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 16px;
-      background: #f7f7f7;
-      margin: 0;
-    }
-
-    #reader {
-      max-width: 420px;
-      margin: 20px auto;
-      background: white;
-      padding: 12px;
-      border-radius: 12px;
-    }
-
-    #status {
-      max-width: 420px;
-      margin: 16px auto;
-      padding: 14px;
-      border-radius: 12px;
-      font-size: 18px;
-      font-weight: bold;
-      min-height: 28px;
+    * {
       box-sizing: border-box;
     }
 
-    .neutral { background: #e9eefb; color: #1f3b7a; }
-    .success { background: #dff6e3; color: #176b2c; }
-    .error { background: #fde2e2; color: #9f1d1d; }
+    :root {
+      --bg-1: #0f172a;
+      --bg-2: #1e293b;
+      --card: rgba(255, 255, 255, 0.12);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --accent: #2563eb;
+      --accent-2: #60a5fa;
+      --success: #16a34a;
+      --error: #dc2626;
+      --warning: #f59e0b;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      --radius: 24px;
+    }
 
-    /* Popup overlay */
-    #popupOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      display: none;
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(96, 165, 250, 0.25), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.3), transparent 30%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      color: var(--text);
+      display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      z-index: 9999;
-      box-sizing: border-box;
     }
 
-    #popupBox {
+    .app {
       width: 100%;
-      max-width: 380px;
-      background: white;
+      max-width: 1150px;
+      min-height: 88vh;
+      display: grid;
+      grid-template-columns: 1fr 1.12fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .panel {
+      border-radius: var(--radius);
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      overflow: hidden;
+    }
+
+    .left-panel {
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .badge {
+      width: fit-content;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.05;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      max-width: 480px;
+    }
+
+    .info-cards {
+      display: grid;
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .info-card {
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 18px;
-      padding: 24px 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      padding: 16px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .info-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.14);
+      font-size: 1.1rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .info-card h3 {
+      margin: 0 0 4px 0;
+      font-size: 1rem;
+    }
+
+    .info-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.45;
+    }
+
+    .footer-note {
+      margin-top: 28px;
+      color: rgba(255,255,255,0.72);
+      font-size: 0.92rem;
+    }
+
+    .right-panel {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .scanner-card {
+      background: rgba(255, 255, 255, 0.97);
+      color: #0f172a;
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      flex: 1;
+    }
+
+    .scanner-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .scanner-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.14);
+    }
+
+    .status {
+      border-radius: 18px;
+      padding: 14px 16px;
+      font-weight: 700;
+      font-size: 1rem;
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: 0.2s ease;
+    }
+
+    .status.neutral {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .status.success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status.error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .status.loading {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    #reader {
+      width: 100%;
+      overflow: hidden;
+      border-radius: 24px;
+      background: #e2e8f0;
+      min-height: 360px;
+      border: 2px solid #e2e8f0;
+    }
+
+    .trouble-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: -6px;
+    }
+
+    .trouble-btn {
+      background: none;
+      border: none;
+      color: #64748b;
+      font-size: 0.85rem;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 10px;
+      transition: 0.18s ease;
+    }
+
+    .trouble-btn:hover {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .search-panel {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 14px;
+      display: none;
+    }
+
+    .search-panel.show {
+      display: block;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #dbe3ee;
+      border-radius: 14px;
+      font-size: 15px;
+      outline: none;
+      background: white;
+    }
+
+    .search-input:focus {
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
+    }
+
+    .search-results {
+      margin-top: 10px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .result-item {
+      width: 100%;
+      text-align: left;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: 0.16s ease;
+    }
+
+    .result-item:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .result-name {
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 3px;
+    }
+
+    .result-meta {
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .result-badge {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .bottom-help {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .help-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 14px;
       text-align: center;
     }
 
-    #popupTitle {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 10px;
+    .help-box strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.95rem;
     }
 
-    #popupMessage {
-      font-size: 18px;
-      margin-bottom: 20px;
+    .help-box span {
+      color: #475569;
+      font-size: 0.88rem;
       line-height: 1.4;
     }
 
-    .btn-wrap {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: nowrap;
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.58);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      padding: 20px;
     }
 
-    button {
-      flex: 1;
-      font-size: 16px;
-      padding: 12px 16px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
+    .overlay.show {
+      display: flex;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 430px;
+      background: #ffffff;
+      color: #0f172a;
+      border-radius: 28px;
+      padding: 28px 24px 22px;
+      box-shadow: 0 30px 60px rgba(15, 23, 42, 0.28);
+      text-align: center;
+      transform: translateY(6px);
+      animation: popIn 0.22s ease forwards;
+    }
+
+    .modal-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 22px;
+      margin: 0 auto 16px;
+      display: grid;
+      place-items: center;
+      font-size: 1.8rem;
       font-weight: bold;
     }
 
-    .cancel-btn {
-      background: #9f1d1d;
+    .modal-icon.confirm { background: #dbeafe; color: #1d4ed8; }
+    .modal-icon.success { background: #dcfce7; color: #15803d; }
+    .modal-icon.error { background: #fee2e2; color: #b91c1c; }
+    .modal-icon.loading { background: #fef3c7; color: #b45309; }
+
+    .modal h2 {
+      margin: 0 0 10px 0;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .modal p {
+      margin: 0 0 22px 0;
+      color: #475569;
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      flex: 1;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-cancel {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .btn-confirm {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: white;
     }
 
-    .confirm-btn {
-      background: #176b2c;
-      color: white;
-    }
-
-    .single-btn {
-      background: #1f3b7a;
+    .btn-ok {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: white;
       width: 100%;
     }
 
     .hidden {
-      display: none;
+      display: none !important;
+    }
+
+    .spinner {
+      width: 22px;
+      height: 22px;
+      border: 3px solid rgba(180, 83, 9, 0.2);
+      border-top-color: #b45309;
+      border-radius: 50%;
+      margin: 0 auto;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .search-note {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (max-width: 920px) {
+      .app {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .left-panel {
+        padding: 28px 24px;
+      }
+
+      .bottom-help {
+        grid-template-columns: 1fr;
+      }
+
+      #reader {
+        min-height: 300px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        padding: 12px;
+      }
+
+      .left-panel,
+      .right-panel {
+        padding: 18px;
+      }
+
+      .scanner-card {
+        padding: 16px;
+      }
+
+      .modal {
+        padding: 24px 18px 18px;
+      }
     }
   </style>
 </head>
 <body>
-  <h2>Chatswood High School</h2>
-  <h2>QR Check-In Scanner</h2>
+  <div class="app">
+    <section class="panel left-panel">
+      <div>
+        <div class="brand">
+          <div class="badge">Student Self Check-In</div>
+          <h1>Scan your QR code to mark your arrival.</h1>
+          <p class="subtitle">
+            Hold your QR code steady in front of the camera. Check your name carefully, then confirm your check-in.
+          </p>
+        </div>
 
-  <div id="status" class="neutral">Put your QR code under the camera</div>
-  <div id="reader"></div>
+        <div class="info-cards">
+          <div class="info-card">
+            <div class="info-icon">1</div>
+            <div>
+              <h3>Scan your code</h3>
+              <p>Place your QR code inside the camera area until it is recognised.</p>
+            </div>
+          </div>
 
-  <!-- Popup -->
-  <div id="popupOverlay">
-    <div id="popupBox">
-      <div id="popupTitle">Confirm Check-In</div>
-      <div id="popupMessage">Loading...</div>
+          <div class="info-card">
+            <div class="info-icon">2</div>
+            <div>
+              <h3>Check your name</h3>
+              <p>A confirmation pop-up will appear over the page with your details.</p>
+            </div>
+          </div>
 
-      <div id="popupButtons" class="btn-wrap">
-        <button class="cancel-btn" id="cancelBtn">Cancel</button>
-        <button class="confirm-btn" id="confirmBtn">Check In</button>
+          <div class="info-card">
+            <div class="info-icon">3</div>
+            <div>
+              <h3>Tap check in</h3>
+              <p>Your attendance will be marked and the scanner will be ready for the next student.</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div id="popupSingleButtonWrap" class="hidden">
-        <button class="single-btn" id="okBtn">OK</button>
+      <div class="footer-note">
+        Make sure the QR code is clear, flat, and fully visible on the screen.
+      </div>
+    </section>
+
+    <section class="panel right-panel">
+      <div class="scanner-card">
+        <div class="scanner-top">
+          <h2 class="scanner-title">Live Scanner</h2>
+          <div class="live-pill">
+            <span class="dot"></span>
+            Camera ready
+          </div>
+        </div>
+
+        <div id="status" class="status neutral">Point the camera at a QR code</div>
+
+        <div id="reader"></div>
+
+        <div class="trouble-wrap">
+          <button id="toggleSearchBtn" class="trouble-btn">Having trouble?</button>
+        </div>
+
+        <div id="searchPanel" class="search-panel">
+          <input
+            id="searchInput"
+            class="search-input"
+            type="text"
+            placeholder="Search student name or code"
+            autocomplete="off"
+          />
+          <div id="searchResults" class="search-results"></div>
+          <div class="search-note">Use this only if a QR code is damaged or not scanning.</div>
+        </div>
+
+        <div class="bottom-help">
+          <div class="help-box">
+            <strong>Hold Still</strong>
+            <span>Keep the QR code steady for a moment.</span>
+          </div>
+          <div class="help-box">
+            <strong>Good Lighting</strong>
+            <span>Move to brighter light if the code will not scan.</span>
+          </div>
+          <div class="help-box">
+            <strong>One at a Time</strong>
+            <span>Wait for the message before scanning the next code.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="overlay" class="overlay">
+    <div class="modal">
+      <div id="modalIcon" class="modal-icon confirm">?</div>
+      <h2 id="modalTitle">Confirm Check-In</h2>
+      <p id="modalMessage">Check in this student?</p>
+
+      <div id="loadingSpinner" class="spinner hidden"></div>
+
+      <div id="confirmActions" class="modal-actions">
+        <button id="cancelBtn" class="btn btn-cancel">Cancel</button>
+        <button id="confirmBtn" class="btn btn-confirm">Check In</button>
+      </div>
+
+      <div id="singleAction" class="hidden" style="margin-top: 16px;">
+        <button id="okBtn" class="btn btn-ok">OK</button>
       </div>
     </div>
   </div>
 
   <script>
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyRvVYUupmFYA_TqdlGwgUdpOD1vGUYV42cGplkoM8DE49kfJ0j9yDNT1Xc75sJag/exec";
+    const APPS_SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
 
     const statusBox = document.getElementById("status");
-    const popupOverlay = document.getElementById("popupOverlay");
-    const popupTitle = document.getElementById("popupTitle");
-    const popupMessage = document.getElementById("popupMessage");
-    const popupButtons = document.getElementById("popupButtons");
-    const popupSingleButtonWrap = document.getElementById("popupSingleButtonWrap");
+    const overlay = document.getElementById("overlay");
+    const modalIcon = document.getElementById("modalIcon");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalMessage = document.getElementById("modalMessage");
+    const loadingSpinner = document.getElementById("loadingSpinner");
+    const confirmActions = document.getElementById("confirmActions");
+    const singleAction = document.getElementById("singleAction");
     const confirmBtn = document.getElementById("confirmBtn");
     const cancelBtn = document.getElementById("cancelBtn");
     const okBtn = document.getElementById("okBtn");
 
+    const toggleSearchBtn = document.getElementById("toggleSearchBtn");
+    const searchPanel = document.getElementById("searchPanel");
+    const searchInput = document.getElementById("searchInput");
+    const searchResults = document.getElementById("searchResults");
+
     let scanner;
     let busy = false;
     let pendingCode = "";
+    let searchTimer;
 
-    function setStatus(message, type) {
+    function setStatus(message, type = "neutral") {
       statusBox.textContent = message;
-      statusBox.className = type;
+      statusBox.className = `status ${type}`;
     }
 
-    function showPopup(title, message, mode = "confirm") {
-      popupTitle.textContent = title;
-      popupMessage.textContent = message;
-      popupOverlay.style.display = "flex";
+    function showOverlay() {
+      overlay.classList.add("show");
+    }
+
+    function hideOverlay() {
+      overlay.classList.remove("show");
+    }
+
+    function setModal(type, title, message, mode = "message") {
+      modalTitle.textContent = title;
+      modalMessage.textContent = message;
+
+      modalIcon.className = `modal-icon ${type}`;
+      loadingSpinner.classList.toggle("hidden", type !== "loading");
+
+      if (type === "confirm") modalIcon.textContent = "?";
+      if (type === "success") modalIcon.textContent = "✓";
+      if (type === "error") modalIcon.textContent = "!";
+      if (type === "loading") modalIcon.textContent = "";
 
       if (mode === "confirm") {
-        popupButtons.classList.remove("hidden");
-        popupSingleButtonWrap.classList.add("hidden");
+        confirmActions.classList.remove("hidden");
+        singleAction.classList.add("hidden");
       } else {
-        popupButtons.classList.add("hidden");
-        popupSingleButtonWrap.classList.remove("hidden");
+        confirmActions.classList.add("hidden");
+        singleAction.classList.remove("hidden");
       }
-    }
 
-    function hidePopup() {
-      popupOverlay.style.display = "none";
-      pendingCode = "";
+      showOverlay();
     }
 
     async function resumeScanning(delay = 1200) {
       setTimeout(async () => {
         try {
-          hidePopup();
+          hideOverlay();
           await scanner.resume();
           setStatus("Point the camera at a QR code", "neutral");
         } catch (e) {
           setStatus("Scanner could not resume", "error");
         }
         busy = false;
+        pendingCode = "";
       }, delay);
     }
 
@@ -232,59 +767,149 @@
       return await response.json();
     }
 
+    async function searchStudents(query) {
+      const response = await fetch(
+        APPS_SCRIPT_URL + "?mode=search&query=" + encodeURIComponent(query)
+      );
+      return await response.json();
+    }
+
+    function renderSearchResults(results) {
+      if (!results || results.length === 0) {
+        searchResults.innerHTML = '<div style="padding:10px;color:#64748b;font-size:14px;">No matches found</div>';
+        return;
+      }
+
+      searchResults.innerHTML = results.map(student => `
+        <button class="result-item" onclick="selectStudentFromSearch('${student.code.replace(/'/g, "\\'")}', '${student.name.replace(/'/g, "\\'")}', ${student.checkedIn})">
+          <div class="result-name">${student.name}</div>
+          <div class="result-meta">${student.code}</div>
+          ${student.checkedIn ? '<div class="result-badge">Already checked in</div>' : ''}
+        </button>
+      `).join("");
+    }
+
     async function onScanSuccess(decodedText) {
       if (busy) return;
       busy = true;
 
       try {
         await scanner.pause(true);
-
-        showPopup("Checking Code", "Loading...", "message");
+        setStatus("Checking code...", "loading");
+        setModal("loading", "Checking Code", "Loading...", "message");
 
         const result = await lookupCode(decodedText);
 
         if (result.success) {
           pendingCode = decodedText;
-          showPopup("Confirm Check-In", `Check in ${result.name}?`, "confirm");
           setStatus("Student found", "neutral");
+          setModal("confirm", "Confirm Check-In", `Check in ${result.name}?`, "confirm");
         } else {
-          setStatus(result.name ? `${result.error} (${result.name})` : result.error, "error");
-          showPopup("Error", result.name ? `${result.error} (${result.name})` : result.error, "message");
+          const message = result.name
+            ? `${result.error} (${result.name})`
+            : result.error;
+
+          setStatus(message, "error");
+          setModal("error", "Unable to Check In", message, "message");
         }
       } catch (err) {
         setStatus("Could not connect to Google Sheets", "error");
-        showPopup("Error", "Could not connect to Google Sheets", "message");
+        setModal("error", "Connection Error", "Could not connect to Google Sheets.", "message");
       }
     }
+
+    window.selectStudentFromSearch = async function(code, name, checkedIn) {
+      if (busy) return;
+      busy = true;
+
+      try {
+        await scanner.pause(true);
+      } catch (e) {}
+
+      searchPanel.classList.remove("show");
+      searchInput.value = "";
+      searchResults.innerHTML = "";
+
+      if (checkedIn) {
+        setStatus(`Already checked in (${name})`, "error");
+        setModal("error", "Already Checked In", `${name} has already been checked in.`, "message");
+        return;
+      }
+
+      pendingCode = "STUCODE:" + code;
+      setStatus("Student found", "neutral");
+      setModal("confirm", "Confirm Check-In", `Check in ${name}?`, "confirm");
+    };
 
     confirmBtn.addEventListener("click", async () => {
       if (!pendingCode) return;
 
       try {
-        showPopup("Checking In", "Loading...", "message");
+        setStatus("Submitting check-in...", "loading");
+        setModal("loading", "Checking In", "Loading...", "message");
 
         const result = await checkInCode(pendingCode);
 
         if (result.success) {
           setStatus("Checked in: " + result.name, "success");
-          showPopup("Success", "Checked in: " + result.name, "message");
+          setModal("success", "Checked In", `${result.name} has been checked in successfully.`, "message");
         } else {
-          setStatus(result.name ? `${result.error} (${result.name})` : result.error, "error");
-          showPopup("Error", result.name ? `${result.error} (${result.name})` : result.error, "message");
+          const message = result.name
+            ? `${result.error} (${result.name})`
+            : result.error;
+
+          setStatus(message, "error");
+          setModal("error", "Unable to Check In", message, "message");
         }
       } catch (err) {
         setStatus("Could not complete check-in", "error");
-        showPopup("Error", "Could not complete check-in", "message");
+        setModal("error", "Check-In Error", "Could not complete check-in.", "message");
       }
     });
 
     cancelBtn.addEventListener("click", async () => {
       setStatus("Check-in cancelled", "error");
-      showPopup("Cancelled", "Check-in cancelled", "message");
+      setModal("error", "Cancelled", "The check-in was cancelled.", "message");
     });
 
     okBtn.addEventListener("click", async () => {
-      await resumeScanning(300);
+      await resumeScanning(250);
+    });
+
+    toggleSearchBtn.addEventListener("click", () => {
+      searchPanel.classList.toggle("show");
+      if (searchPanel.classList.contains("show")) {
+        setTimeout(() => searchInput.focus(), 100);
+      } else {
+        searchInput.value = "";
+        searchResults.innerHTML = "";
+      }
+    });
+
+    searchInput.addEventListener("input", () => {
+      clearTimeout(searchTimer);
+
+      const query = searchInput.value.trim();
+
+      if (!query) {
+        searchResults.innerHTML = "";
+        return;
+      }
+
+      searchTimer = setTimeout(async () => {
+        searchResults.innerHTML = '<div style="padding:10px;color:#64748b;font-size:14px;">Loading...</div>';
+
+        try {
+          const result = await searchStudents(query);
+          if (result.success) {
+            renderSearchResults(result.results);
+          } else {
+            searchResults.innerHTML = `<div style="padding:10px;color:#991b1b;font-size:14px;">${result.error}</div>`;
+          }
+        } catch (err) {
+          searchResults.innerHTML = '<div style="padding:10px;color:#991b1b;font-size:14px;">Search failed</div>';
+        }
+      }, 250);
     });
 
     startScanner();
