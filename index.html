@@ -19,8 +19,11 @@
       --accent: #2563eb;
       --accent-2: #60a5fa;
       --success: #16a34a;
+      --success-soft: #dcfce7;
       --error: #dc2626;
+      --error-soft: #fee2e2;
       --warning: #f59e0b;
+      --warning-soft: #fef3c7;
       --shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
       --radius: 24px;
     }
@@ -112,7 +115,11 @@
       display: flex;
       gap: 14px;
       align-items: flex-start;
+      animation: fadeSlideUp 0.45s ease both;
     }
+
+    .info-card:nth-child(2) { animation-delay: 0.08s; }
+    .info-card:nth-child(3) { animation-delay: 0.16s; }
 
     .info-icon {
       width: 40px;
@@ -196,6 +203,7 @@
       border-radius: 50%;
       background: #22c55e;
       box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.14);
+      animation: pulseDot 1.8s infinite;
     }
 
     .status {
@@ -217,17 +225,17 @@
     }
 
     .status.success {
-      background: #dcfce7;
+      background: var(--success-soft);
       color: #166534;
     }
 
     .status.error {
-      background: #fee2e2;
+      background: var(--error-soft);
       color: #991b1b;
     }
 
     .status.loading {
-      background: #fef3c7;
+      background: var(--warning-soft);
       color: #92400e;
     }
 
@@ -238,6 +246,7 @@
       background: #e2e8f0;
       min-height: 360px;
       border: 2px solid #e2e8f0;
+      position: relative;
     }
 
     .trouble-wrap {
@@ -268,6 +277,7 @@
       border-radius: 18px;
       padding: 14px;
       display: none;
+      animation: fadeSlideUp 0.2s ease;
     }
 
     .search-panel.show {
@@ -310,6 +320,7 @@
     .result-item:hover {
       background: #f8fafc;
       border-color: #cbd5e1;
+      transform: translateY(-1px);
     }
 
     .result-name {
@@ -330,7 +341,7 @@
       border-radius: 999px;
       font-size: 11px;
       font-weight: 700;
-      background: #fee2e2;
+      background: var(--error-soft);
       color: #991b1b;
     }
 
@@ -346,7 +357,11 @@
       border-radius: 18px;
       padding: 14px;
       text-align: center;
+      animation: fadeSlideUp 0.45s ease both;
     }
+
+    .help-box:nth-child(2) { animation-delay: 0.06s; }
+    .help-box:nth-child(3) { animation-delay: 0.12s; }
 
     .help-box strong {
       display: block;
@@ -363,9 +378,9 @@
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.58);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: rgba(15, 23, 42, 0.62);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -375,98 +390,126 @@
 
     .overlay.show {
       display: flex;
-      animation: fadeIn 0.2s ease;
+      animation: fadeIn 0.18s ease;
     }
 
     .modal {
       width: 100%;
-      max-width: 430px;
+      max-width: 560px;
       background: #ffffff;
       color: #0f172a;
-      border-radius: 28px;
-      padding: 28px 24px 22px;
+      border-radius: 34px;
+      padding: 36px 28px 30px;
       box-shadow: 0 30px 60px rgba(15, 23, 42, 0.28);
       text-align: center;
-      transform: translateY(6px);
       animation: popIn 0.22s ease forwards;
     }
 
     .modal-icon {
-      width: 72px;
-      height: 72px;
-      border-radius: 22px;
-      margin: 0 auto 16px;
+      width: 126px;
+      height: 126px;
+      border-radius: 34px;
+      margin: 0 auto 20px;
       display: grid;
       place-items: center;
-      font-size: 1.8rem;
-      font-weight: bold;
+      font-size: 3rem;
+      font-weight: 900;
+      position: relative;
+      overflow: hidden;
     }
 
-    .modal-icon.confirm { background: #dbeafe; color: #1d4ed8; }
-    .modal-icon.success { background: #dcfce7; color: #15803d; }
-    .modal-icon.error { background: #fee2e2; color: #b91c1c; }
-    .modal-icon.loading { background: #fef3c7; color: #b45309; }
+    .modal-icon.success {
+      background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+      color: #15803d;
+      animation: successPulse 0.5s ease;
+    }
+
+    .modal-icon.error {
+      background: linear-gradient(135deg, #fee2e2, #fecaca);
+      color: #b91c1c;
+      animation: subtleShake 0.28s ease;
+    }
+
+    .modal-icon.loading {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      color: #b45309;
+    }
+
+    .success-ring {
+      position: absolute;
+      inset: 14px;
+      border: 4px solid rgba(21, 128, 61, 0.16);
+      border-radius: 26px;
+      animation: ringExpand 0.65s ease;
+    }
+
+    .tick {
+      position: relative;
+      width: 56px;
+      height: 56px;
+      transform: rotate(45deg);
+    }
+
+    .tick:before,
+    .tick:after {
+      content: "";
+      position: absolute;
+      background: currentColor;
+      border-radius: 999px;
+      transform-origin: left top;
+    }
+
+    .tick:before {
+      width: 10px;
+      height: 30px;
+      left: 18px;
+      top: 20px;
+      animation: drawShort 0.18s ease forwards;
+    }
+
+    .tick:after {
+      width: 10px;
+      height: 58px;
+      left: 28px;
+      top: -8px;
+      animation: drawLong 0.28s ease 0.15s forwards;
+      opacity: 0;
+    }
 
     .modal h2 {
       margin: 0 0 10px 0;
-      font-size: 1.5rem;
+      font-size: 2.05rem;
       font-weight: 800;
     }
 
     .modal p {
-      margin: 0 0 22px 0;
+      margin: 0;
       color: #475569;
-      font-size: 1rem;
-      line-height: 1.55;
+      font-size: 1.12rem;
+      line-height: 1.5;
     }
 
-    .modal-actions {
-      display: flex;
-      gap: 12px;
+    .modal-subtext {
+      margin-top: 10px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #166534;
     }
 
-    .btn {
-      border: none;
-      border-radius: 16px;
-      padding: 14px 18px;
-      font-size: 1rem;
-      font-weight: 800;
-      cursor: pointer;
-      flex: 1;
-      transition: transform 0.15s ease, opacity 0.15s ease;
+    .modal-subtext.error {
+      color: #991b1b;
     }
 
-    .btn:active {
-      transform: scale(0.98);
-    }
-
-    .btn-cancel {
-      background: #f1f5f9;
-      color: #334155;
-    }
-
-    .btn-confirm {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: white;
-    }
-
-    .btn-ok {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: white;
-      width: 100%;
-    }
-
-    .hidden {
-      display: none !important;
+    .modal-subtext.warning {
+      color: #92400e;
     }
 
     .spinner {
-      width: 22px;
-      height: 22px;
-      border: 3px solid rgba(180, 83, 9, 0.2);
+      width: 38px;
+      height: 38px;
+      border: 4px solid rgba(180, 83, 9, 0.18);
       border-top-color: #b45309;
       border-radius: 50%;
-      margin: 0 auto;
       animation: spin 0.8s linear infinite;
     }
 
@@ -500,6 +543,7 @@
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
       text-align: center;
       color: #0f172a;
+      animation: popIn 0.22s ease forwards;
     }
 
     .auth-badge {
@@ -557,6 +601,11 @@
       cursor: pointer;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: white;
+      transition: transform 0.16s ease;
+    }
+
+    .auth-btn:active {
+      transform: scale(0.98);
     }
 
     .auth-note {
@@ -574,6 +623,17 @@
       to { opacity: 1; }
     }
 
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     @keyframes popIn {
       from {
         opacity: 0;
@@ -582,6 +642,66 @@
       to {
         opacity: 1;
         transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes successPulse {
+      0% {
+        transform: scale(0.72);
+        opacity: 0.45;
+      }
+      60% {
+        transform: scale(1.06);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes subtleShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    @keyframes ringExpand {
+      from {
+        opacity: 0.6;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 0;
+        transform: scale(1.15);
+      }
+    }
+
+    @keyframes drawShort {
+      from {
+        height: 0;
+      }
+      to {
+        height: 30px;
+      }
+    }
+
+    @keyframes drawLong {
+      from {
+        height: 0;
+        opacity: 1;
+      }
+      to {
+        height: 58px;
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulseDot {
+      0%, 100% {
+        box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.14);
+      }
+      50% {
+        box-shadow: 0 0 0 10px rgba(34, 197, 94, 0.08);
       }
     }
 
@@ -622,6 +742,19 @@
       .auth-card {
         padding: 24px 18px 18px;
       }
+
+      .modal h2 {
+        font-size: 1.7rem;
+      }
+
+      .modal p {
+        font-size: 1rem;
+      }
+
+      .modal-icon {
+        width: 100px;
+        height: 100px;
+      }
     }
   </style>
 </head>
@@ -629,7 +762,7 @@
   <div id="authOverlay" class="auth-overlay">
     <div class="auth-card">
       <div class="auth-badge">Protected Access</div>
-      <h2 id="authSiteTitle">Student Check-In</h2>
+      <h2>Student Check-In</h2>
       <p>Enter the page password to open the scanner.</p>
       <input
         id="authInput"
@@ -640,7 +773,7 @@
       />
       <div id="authError" class="auth-error"></div>
       <button id="authBtn" class="auth-btn">Enter</button>
-      <div class="auth-note">This device will stay signed in until you log out or clear browser data.</div>
+      <div class="auth-note">This device will stay signed in until the tab is closed.</div>
     </div>
   </div>
 
@@ -649,9 +782,9 @@
       <div>
         <div class="brand">
           <div class="badge">Student Self Check-In</div>
-          <h1 id="mainHeading">Scan your QR code to mark your arrival.</h1>
+          <h1>Scan your QR code to mark your arrival.</h1>
           <p class="subtitle">
-            Hold your QR code steady in front of the camera. Check your name carefully, then confirm your check-in.
+            Hold your QR code steady in front of the camera. Once scanned, your check-in will be completed automatically.
           </p>
         </div>
 
@@ -667,30 +800,30 @@
           <div class="info-card">
             <div class="info-icon">2</div>
             <div>
-              <h3>Check your name</h3>
-              <p>A confirmation pop-up will appear over the page with your details.</p>
+              <h3>Wait for the screen</h3>
+              <p>You will see a large check-in message if your scan is successful.</p>
             </div>
           </div>
 
           <div class="info-card">
             <div class="info-icon">3</div>
             <div>
-              <h3>Tap check in</h3>
-              <p>Your attendance will be marked and the scanner will be ready for the next student.</p>
+              <h3>Take a seat</h3>
+              <p>After check-in, please sit in the sitting area and wait for further instructions.</p>
             </div>
           </div>
         </div>
       </div>
 
       <div class="footer-note">
-        Make sure the QR code is clear, flat, and fully visible on the screen.
+        If your QR code does not work, please see a teacher.
       </div>
     </section>
 
     <section class="panel right-panel">
       <div class="scanner-card">
         <div class="scanner-top">
-          <h2 class="scanner-title" id="scannerTitle">Live Scanner</h2>
+          <h2 class="scanner-title">Live Scanner</h2>
           <div class="live-pill">
             <span class="dot"></span>
             Camera ready
@@ -727,8 +860,8 @@
             <span>Move to brighter light if the code will not scan.</span>
           </div>
           <div class="help-box">
-            <strong>One at a Time</strong>
-            <span>Wait for the message before scanning the next code.</span>
+            <strong>See a Teacher</strong>
+            <span>If your code is not working, a teacher can help.</span>
           </div>
         </div>
       </div>
@@ -737,63 +870,39 @@
 
   <div id="overlay" class="overlay">
     <div class="modal">
-      <div id="modalIcon" class="modal-icon confirm">?</div>
-      <h2 id="modalTitle">Confirm Check-In</h2>
-      <p id="modalMessage">Check in this student?</p>
-
-      <div id="loadingSpinner" class="spinner hidden"></div>
-
-      <div id="confirmActions" class="modal-actions">
-        <button id="cancelBtn" class="btn btn-cancel">Cancel</button>
-        <button id="confirmBtn" class="btn btn-confirm">Check In</button>
+      <div id="modalIcon" class="modal-icon loading">
+        <div class="spinner"></div>
       </div>
-
-      <div id="singleAction" class="hidden" style="margin-top: 16px;">
-        <button id="okBtn" class="btn btn-ok">OK</button>
-      </div>
+      <h2 id="modalTitle">Checking In</h2>
+      <p id="modalMessage">Loading...</p>
+      <div id="modalSubtext" class="modal-subtext hidden"></div>
     </div>
   </div>
 
   <script>
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyRvVYUupmFYA_TqdlGwgUdpOD1vGUYV42cGplkoM8DE49kfJ0j9yDNT1Xc75sJag/exec";
     const PAGE_PASSWORD = "Chatswood1";
-    const SITE_TITLE = "Student Check-In";
 
     const authOverlay = document.getElementById("authOverlay");
     const authInput = document.getElementById("authInput");
     const authBtn = document.getElementById("authBtn");
     const authError = document.getElementById("authError");
-    const authSiteTitle = document.getElementById("authSiteTitle");
 
     const statusBox = document.getElementById("status");
     const overlay = document.getElementById("overlay");
     const modalIcon = document.getElementById("modalIcon");
     const modalTitle = document.getElementById("modalTitle");
     const modalMessage = document.getElementById("modalMessage");
-    const loadingSpinner = document.getElementById("loadingSpinner");
-    const confirmActions = document.getElementById("confirmActions");
-    const singleAction = document.getElementById("singleAction");
-    const confirmBtn = document.getElementById("confirmBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
-    const okBtn = document.getElementById("okBtn");
+    const modalSubtext = document.getElementById("modalSubtext");
 
     const toggleSearchBtn = document.getElementById("toggleSearchBtn");
     const searchPanel = document.getElementById("searchPanel");
     const searchInput = document.getElementById("searchInput");
     const searchResults = document.getElementById("searchResults");
 
-    const mainHeading = document.getElementById("mainHeading");
-    const scannerTitle = document.getElementById("scannerTitle");
-
     let scanner;
     let busy = false;
-    let pendingCode = "";
     let searchTimer;
-
-    authSiteTitle.textContent = SITE_TITLE;
-    document.title = SITE_TITLE;
-    mainHeading.textContent = "Scan your QR code to mark your arrival.";
-    scannerTitle.textContent = "Live Scanner";
 
     function isAuthenticated() {
       return sessionStorage.getItem("scanner_auth") === "true";
@@ -802,13 +911,6 @@
     function unlockPage() {
       authOverlay.style.display = "none";
       if (!scanner) startScanner();
-    }
-
-    function lockPage() {
-      sessionStorage.removeItem("scanner_auth");
-      authOverlay.style.display = "flex";
-      authInput.value = "";
-      authError.textContent = "";
     }
 
     if (isAuthenticated()) {
@@ -843,30 +945,33 @@
       overlay.classList.remove("show");
     }
 
-    function setModal(type, title, message, mode = "message") {
+    function setModal(type, title, message, subtext = "", subtextClass = "") {
       modalTitle.textContent = title;
       modalMessage.textContent = message;
 
       modalIcon.className = `modal-icon ${type}`;
-      loadingSpinner.classList.toggle("hidden", type !== "loading");
+      modalSubtext.textContent = subtext;
+      modalSubtext.className = "modal-subtext";
 
-      if (type === "confirm") modalIcon.textContent = "?";
-      if (type === "success") modalIcon.textContent = "✓";
-      if (type === "error") modalIcon.textContent = "!";
-      if (type === "loading") modalIcon.textContent = "";
-
-      if (mode === "confirm") {
-        confirmActions.classList.remove("hidden");
-        singleAction.classList.add("hidden");
+      if (subtext) {
+        modalSubtext.classList.remove("hidden");
+        if (subtextClass) modalSubtext.classList.add(subtextClass);
       } else {
-        confirmActions.classList.add("hidden");
-        singleAction.classList.remove("hidden");
+        modalSubtext.classList.add("hidden");
+      }
+
+      if (type === "loading") {
+        modalIcon.innerHTML = '<div class="spinner"></div>';
+      } else if (type === "success") {
+        modalIcon.innerHTML = '<div class="success-ring"></div><div class="tick"></div>';
+      } else if (type === "error") {
+        modalIcon.textContent = "!";
       }
 
       showOverlay();
     }
 
-    async function resumeScanning(delay = 1200) {
+    async function resumeScanning(delay = 1000) {
       setTimeout(async () => {
         try {
           hideOverlay();
@@ -876,7 +981,6 @@
           setStatus("Scanner could not resume", "error");
         }
         busy = false;
-        pendingCode = "";
       }, delay);
     }
 
@@ -947,33 +1051,77 @@
       `).join("");
     }
 
+    async function processAutomaticCheckIn(code) {
+      try {
+        setStatus("Checking code...", "loading");
+        setModal("loading", "Checking In", "Loading...");
+
+        const lookup = await lookupCode(code);
+
+        if (!lookup.success) {
+          const message = lookup.name
+            ? `${lookup.error} (${lookup.name})`
+            : (lookup.error === "Code not recognised" ? "Please see a teacher." : lookup.error);
+
+          setStatus(message, "error");
+
+          if (lookup.error === "Code not recognised") {
+            setModal("error", "Please See a Teacher", "This QR code could not be recognised.", "Ask a teacher for help.", "warning");
+          } else if (lookup.error === "Already checked in") {
+            setModal("error", "Already Checked In", lookup.name || "This student has already checked in.", "Please see a teacher if this is incorrect.", "error");
+          } else {
+            setModal("error", "Unable to Check In", message, "Please see a teacher.", "warning");
+          }
+
+          await resumeScanning(1200);
+          return;
+        }
+
+        const result = await checkInCode(code);
+
+        if (result.success) {
+          setStatus("Checked in: " + result.name, "success");
+          setModal(
+            "success",
+            "Checked In",
+            result.name,
+            "Please sit in the sitting area.",
+            ""
+          );
+          await resumeScanning(1100);
+        } else {
+          const message = result.name
+            ? `${result.error} (${result.name})`
+            : (result.error === "Code not recognised" ? "Please see a teacher." : result.error);
+
+          setStatus(message, "error");
+
+          if (result.error === "Already checked in") {
+            setModal("error", "Already Checked In", result.name || "This student has already checked in.", "Please see a teacher if this is incorrect.", "error");
+          } else if (result.error === "Code not recognised") {
+            setModal("error", "Please See a Teacher", "This QR code could not be recognised.", "Ask a teacher for help.", "warning");
+          } else {
+            setModal("error", "Unable to Check In", message, "Please see a teacher.", "warning");
+          }
+
+          await resumeScanning(1200);
+        }
+      } catch (err) {
+        setStatus("Could not connect", "error");
+        setModal("error", "Please See a Teacher", "There was a connection problem.", "Ask a teacher for help.", "warning");
+        await resumeScanning(1200);
+      }
+    }
+
     async function onScanSuccess(decodedText) {
       if (busy) return;
       busy = true;
 
       try {
         await scanner.pause(true);
-        setStatus("Checking code...", "loading");
-        setModal("loading", "Checking Code", "Loading...", "message");
+      } catch (e) {}
 
-        const result = await lookupCode(decodedText);
-
-        if (result.success) {
-          pendingCode = decodedText;
-          setStatus("Student found", "neutral");
-          setModal("confirm", "Confirm Check-In", `Check in ${result.name}?`, "confirm");
-        } else {
-          const message = result.name
-            ? `${result.error} (${result.name})`
-            : result.error;
-
-          setStatus(message, "error");
-          setModal("error", "Unable to Check In", message, "message");
-        }
-      } catch (err) {
-        setStatus("Could not connect to Google Sheets", "error");
-        setModal("error", "Connection Error", "Could not connect to Google Sheets.", "message");
-      }
+      await processAutomaticCheckIn(decodedText);
     }
 
     window.selectStudentFromSearch = async function(code, name, checkedIn) {
@@ -990,49 +1138,13 @@
 
       if (checkedIn) {
         setStatus(`Already checked in (${name})`, "error");
-        setModal("error", "Already Checked In", `${name} has already been checked in.`, "message");
+        setModal("error", "Already Checked In", name, "Please see a teacher if this is incorrect.", "error");
+        await resumeScanning(1200);
         return;
       }
 
-      pendingCode = "STUCODE:" + code;
-      setStatus("Student found", "neutral");
-      setModal("confirm", "Confirm Check-In", `Check in ${name}?`, "confirm");
+      await processAutomaticCheckIn("STUCODE:" + code);
     };
-
-    confirmBtn.addEventListener("click", async () => {
-      if (!pendingCode) return;
-
-      try {
-        setStatus("Submitting check-in...", "loading");
-        setModal("loading", "Checking In", "Loading...", "message");
-
-        const result = await checkInCode(pendingCode);
-
-        if (result.success) {
-          setStatus("Checked in: " + result.name, "success");
-          setModal("success", "Checked In", `${result.name} has been checked in successfully.`, "message");
-        } else {
-          const message = result.name
-            ? `${result.error} (${result.name})`
-            : result.error;
-
-          setStatus(message, "error");
-          setModal("error", "Unable to Check In", message, "message");
-        }
-      } catch (err) {
-        setStatus("Could not complete check-in", "error");
-        setModal("error", "Check-In Error", "Could not complete check-in.", "message");
-      }
-    });
-
-    cancelBtn.addEventListener("click", async () => {
-      setStatus("Check-in cancelled", "error");
-      setModal("error", "Cancelled", "The check-in was cancelled.", "message");
-    });
-
-    okBtn.addEventListener("click", async () => {
-      await resumeScanning(250);
-    });
 
     toggleSearchBtn.addEventListener("click", () => {
       searchPanel.classList.toggle("show");
