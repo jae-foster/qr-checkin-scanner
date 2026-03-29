@@ -10,297 +10,198 @@
       box-sizing: border-box;
     }
 
-    :root {
-      --bg-1: #0f172a;
-      --bg-2: #1e293b;
-      --card: rgba(255, 255, 255, 0.12);
-      --text: #f8fafc;
-      --muted: #cbd5e1;
-      --accent: #2563eb;
-      --accent-2: #60a5fa;
-      --success: #16a34a;
-      --success-soft: #dcfce7;
-      --error: #dc2626;
-      --error-soft: #fee2e2;
-      --warning: #f59e0b;
-      --warning-soft: #fef3c7;
-      --shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-      --radius: 24px;
-    }
-
     body {
       margin: 0;
-      font-family: Inter, Arial, sans-serif;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top left, rgba(96, 165, 250, 0.25), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.3), transparent 30%),
-        linear-gradient(135deg, var(--bg-1), var(--bg-2));
-      color: var(--text);
-      display: flex;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #111827;
+    }
+
+    .auth-overlay,
+    .overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
       align-items: center;
       justify-content: center;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 9999;
       padding: 20px;
     }
 
-    .app {
+    .auth-overlay {
+      display: flex;
+    }
+
+    .auth-card,
+    .modal {
       width: 100%;
-      max-width: 1150px;
-      min-height: 88vh;
-      display: grid;
-      grid-template-columns: 1fr 1.12fr;
-      gap: 24px;
-      align-items: stretch;
+      max-width: 520px;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
     }
 
-    .panel {
-      border-radius: var(--radius);
-      background: var(--card);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      overflow: hidden;
+    .auth-card h2,
+    .modal h2 {
+      margin: 0 0 12px 0;
+      font-size: 2rem;
     }
 
-    .left-panel {
-      padding: 36px 30px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+    .auth-card p,
+    .modal p {
+      margin: 0;
+      line-height: 1.5;
     }
 
-    .brand {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+    .auth-input,
+    .search-input {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      margin-top: 14px;
+      outline: none;
     }
 
-    .badge {
-      width: fit-content;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.14);
-      color: var(--muted);
-      font-size: 0.9rem;
-      font-weight: 600;
-      letter-spacing: 0.2px;
+    .auth-btn {
+      width: 100%;
+      margin-top: 12px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .auth-error {
+      min-height: 22px;
+      color: #b91c1c;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     }
 
     h1 {
-      margin: 0;
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      line-height: 1.05;
-      font-weight: 800;
+      margin: 0 0 10px 0;
+      font-size: 2rem;
+      text-align: center;
     }
 
     .subtitle {
-      margin: 0;
-      color: var(--muted);
-      font-size: 1.05rem;
-      line-height: 1.6;
-      max-width: 480px;
-    }
-
-    .info-cards {
-      display: grid;
-      gap: 14px;
-      margin-top: 26px;
-    }
-
-    .info-card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 18px;
-      padding: 16px 18px;
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-      animation: fadeSlideUp 0.45s ease both;
-    }
-
-    .info-card:nth-child(2) { animation-delay: 0.08s; }
-    .info-card:nth-child(3) { animation-delay: 0.16s; }
-
-    .info-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      background: rgba(255, 255, 255, 0.14);
-      font-size: 1.1rem;
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-
-    .info-card h3 {
-      margin: 0 0 4px 0;
+      margin: 0 0 22px 0;
+      text-align: center;
+      color: #4b5563;
       font-size: 1rem;
-    }
-
-    .info-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.94rem;
-      line-height: 1.45;
-    }
-
-    .footer-note {
-      margin-top: 28px;
-      color: rgba(255,255,255,0.72);
-      font-size: 0.92rem;
-    }
-
-    .right-panel {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .scanner-card {
-      background: rgba(255, 255, 255, 0.97);
-      color: #0f172a;
-      border-radius: 24px;
-      padding: 22px;
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      flex: 1;
-    }
-
-    .scanner-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .scanner-title {
-      font-size: 1.35rem;
-      font-weight: 800;
-      margin: 0;
-    }
-
-    .live-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #eff6ff;
-      color: #1d4ed8;
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 0.9rem;
-      font-weight: 700;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.14);
-      animation: pulseDot 1.8s infinite;
     }
 
     .status {
-      border-radius: 18px;
       padding: 14px 16px;
-      font-weight: 700;
-      font-size: 1rem;
-      min-height: 54px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      border-radius: 12px;
       text-align: center;
-      transition: 0.2s ease;
+      font-weight: bold;
+      margin-bottom: 18px;
+      font-size: 1rem;
     }
 
     .status.neutral {
-      background: #eff6ff;
+      background: #e5efff;
       color: #1d4ed8;
     }
 
+    .status.loading {
+      background: #fff4d6;
+      color: #92400e;
+    }
+
     .status.success {
-      background: var(--success-soft);
+      background: #dcfce7;
       color: #166534;
     }
 
     .status.error {
-      background: var(--error-soft);
+      background: #fee2e2;
       color: #991b1b;
-    }
-
-    .status.loading {
-      background: var(--warning-soft);
-      color: #92400e;
     }
 
     #reader {
       width: 100%;
+      min-height: 340px;
+      border-radius: 14px;
       overflow: hidden;
-      border-radius: 24px;
-      background: #e2e8f0;
-      min-height: 360px;
-      border: 2px solid #e2e8f0;
-      position: relative;
+      border: 2px solid #e5e7eb;
+      background: #f9fafb;
+    }
+
+    .help-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .help-box {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .help-box strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
     }
 
     .trouble-wrap {
-      display: flex;
-      justify-content: center;
-      margin-top: -6px;
+      text-align: center;
+      margin-top: 14px;
     }
 
     .trouble-btn {
       background: none;
       border: none;
-      color: #64748b;
-      font-size: 0.85rem;
+      color: #4b5563;
+      font-size: 14px;
       cursor: pointer;
-      padding: 6px 10px;
-      border-radius: 10px;
-      transition: 0.18s ease;
-    }
-
-    .trouble-btn:hover {
-      background: #f1f5f9;
-      color: #334155;
+      text-decoration: underline;
     }
 
     .search-panel {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 18px;
-      padding: 14px;
       display: none;
-      animation: fadeSlideUp 0.2s ease;
+      margin-top: 14px;
+      padding: 14px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
     }
 
     .search-panel.show {
       display: block;
     }
 
-    .search-input {
-      width: 100%;
-      padding: 13px 14px;
-      border: 1px solid #dbe3ee;
-      border-radius: 14px;
-      font-size: 15px;
-      outline: none;
-      background: white;
-    }
-
-    .search-input:focus {
-      border-color: #93c5fd;
-      box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
-    }
-
     .search-results {
-      margin-top: 10px;
+      margin-top: 12px;
       max-height: 220px;
       overflow-y: auto;
     }
@@ -309,29 +210,21 @@
       width: 100%;
       text-align: left;
       background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 14px;
-      padding: 12px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px;
       margin-bottom: 8px;
       cursor: pointer;
-      transition: 0.16s ease;
-    }
-
-    .result-item:hover {
-      background: #f8fafc;
-      border-color: #cbd5e1;
-      transform: translateY(-1px);
     }
 
     .result-name {
-      font-weight: 800;
-      color: #0f172a;
+      font-weight: bold;
       margin-bottom: 3px;
     }
 
     .result-meta {
       font-size: 13px;
-      color: #64748b;
+      color: #6b7280;
     }
 
     .result-badge {
@@ -339,421 +232,86 @@
       margin-top: 6px;
       padding: 4px 8px;
       border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      background: var(--error-soft);
+      background: #fee2e2;
       color: #991b1b;
-    }
-
-    .bottom-help {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .help-box {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 18px;
-      padding: 14px;
-      text-align: center;
-      animation: fadeSlideUp 0.45s ease both;
-    }
-
-    .help-box:nth-child(2) { animation-delay: 0.06s; }
-    .help-box:nth-child(3) { animation-delay: 0.12s; }
-
-    .help-box strong {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 0.95rem;
-    }
-
-    .help-box span {
-      color: #475569;
-      font-size: 0.88rem;
-      line-height: 1.4;
-    }
-
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.62);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 99999;
-      padding: 20px;
-    }
-
-    .overlay.show {
-      display: flex;
-      animation: fadeIn 0.18s ease;
+      font-size: 11px;
+      font-weight: bold;
     }
 
     .modal {
-      width: 100%;
-      max-width: 560px;
-      background: #ffffff;
-      color: #0f172a;
-      border-radius: 34px;
-      padding: 36px 28px 30px;
-      box-shadow: 0 30px 60px rgba(15, 23, 42, 0.28);
-      text-align: center;
-      animation: popIn 0.22s ease forwards;
+      max-width: 600px;
     }
 
     .modal-icon {
-      width: 126px;
-      height: 126px;
-      border-radius: 34px;
-      margin: 0 auto 20px;
-      display: grid;
-      place-items: center;
-      font-size: 3rem;
-      font-weight: 900;
-      position: relative;
-      overflow: hidden;
+      font-size: 6rem;
+      line-height: 1;
+      font-weight: bold;
+      margin-bottom: 16px;
     }
 
     .modal-icon.success {
-      background: linear-gradient(135deg, #dcfce7, #bbf7d0);
       color: #15803d;
-      animation: successPulse 0.5s ease;
     }
 
     .modal-icon.error {
-      background: linear-gradient(135deg, #fee2e2, #fecaca);
       color: #b91c1c;
-      animation: subtleShake 0.28s ease;
     }
 
     .modal-icon.loading {
-      background: linear-gradient(135deg, #fef3c7, #fde68a);
       color: #b45309;
+      font-size: 2.3rem;
     }
 
-    .success-ring {
-      position: absolute;
-      inset: 14px;
-      border: 4px solid rgba(21, 128, 61, 0.16);
-      border-radius: 26px;
-      animation: ringExpand 0.65s ease;
+    .modal-title-large {
+      font-size: 3rem !important;
+      margin-bottom: 10px !important;
     }
 
-    .tick {
-      position: relative;
-      width: 56px;
-      height: 56px;
-      transform: rotate(45deg);
-    }
-
-    .tick:before,
-    .tick:after {
-      content: "";
-      position: absolute;
-      background: currentColor;
-      border-radius: 999px;
-      transform-origin: left top;
-    }
-
-    .tick:before {
-      width: 10px;
-      height: 30px;
-      left: 18px;
-      top: 20px;
-      animation: drawShort 0.18s ease forwards;
-    }
-
-    .tick:after {
-      width: 10px;
-      height: 58px;
-      left: 28px;
-      top: -8px;
-      animation: drawLong 0.28s ease 0.15s forwards;
-      opacity: 0;
-    }
-
-    .modal h2 {
-      margin: 0 0 10px 0;
-      font-size: 2.05rem;
-      font-weight: 800;
-    }
-
-    .modal p {
-      margin: 0;
-      color: #475569;
-      font-size: 1.12rem;
-      line-height: 1.5;
-    }
-
-    .modal-subtext {
+    .modal-name {
+      font-size: 2rem;
+      font-weight: bold;
       margin-top: 10px;
-      font-size: 0.98rem;
-      font-weight: 700;
-      color: #166534;
-    }
-
-    .modal-subtext.error {
-      color: #991b1b;
-    }
-
-    .modal-subtext.warning {
-      color: #92400e;
-    }
-
-    .spinner {
-      width: 38px;
-      height: 38px;
-      border: 4px solid rgba(180, 83, 9, 0.18);
-      border-top-color: #b45309;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    .search-note {
-      font-size: 12px;
-      color: #64748b;
-      margin-top: 8px;
-      text-align: center;
-    }
-
-    .auth-overlay {
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at top left, rgba(96, 165, 250, 0.18), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.2), transparent 30%),
-        rgba(15, 23, 42, 0.96);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000000;
-      padding: 20px;
-    }
-
-    .auth-card {
-      width: 100%;
-      max-width: 420px;
-      background: rgba(255,255,255,0.98);
-      border-radius: 28px;
-      padding: 28px 24px;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
-      text-align: center;
-      color: #0f172a;
-      animation: popIn 0.22s ease forwards;
-    }
-
-    .auth-badge {
-      display: inline-block;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: #eff6ff;
-      color: #1d4ed8;
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .auth-card h2 {
-      margin: 0 0 8px 0;
-      font-size: 1.7rem;
-      font-weight: 800;
-    }
-
-    .auth-card p {
-      margin: 0 0 18px 0;
-      color: #64748b;
-      line-height: 1.5;
-    }
-
-    .auth-input {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 16px;
-      border: 1px solid #dbe3ee;
-      font-size: 16px;
-      outline: none;
       margin-bottom: 10px;
     }
 
-    .auth-input:focus {
-      border-color: #93c5fd;
-      box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
+    .modal-seat {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #166534;
+      margin-top: 14px;
+      margin-bottom: 18px;
     }
 
-    .auth-error {
-      min-height: 22px;
-      color: #b91c1c;
-      font-size: 0.92rem;
-      margin-bottom: 8px;
+    .modal-seat.error {
+      color: #991b1b;
     }
 
-    .auth-btn {
-      width: 100%;
-      border: none;
-      border-radius: 16px;
-      padding: 14px 18px;
+    .countdown {
       font-size: 1rem;
-      font-weight: 800;
-      cursor: pointer;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: white;
-      transition: transform 0.16s ease;
+      color: #6b7280;
+      margin-top: 8px;
     }
 
-    .auth-btn:active {
-      transform: scale(0.98);
-    }
-
-    .auth-note {
-      margin-top: 12px;
-      font-size: 0.82rem;
-      color: #94a3b8;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes fadeSlideUp {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes popIn {
-      from {
-        opacity: 0;
-        transform: translateY(18px) scale(0.97);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes successPulse {
-      0% {
-        transform: scale(0.72);
-        opacity: 0.45;
-      }
-      60% {
-        transform: scale(1.06);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(1);
-      }
-    }
-
-    @keyframes subtleShake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
-    }
-
-    @keyframes ringExpand {
-      from {
-        opacity: 0.6;
-        transform: scale(0.8);
-      }
-      to {
-        opacity: 0;
-        transform: scale(1.15);
-      }
-    }
-
-    @keyframes drawShort {
-      from {
-        height: 0;
-      }
-      to {
-        height: 30px;
-      }
-    }
-
-    @keyframes drawLong {
-      from {
-        height: 0;
-        opacity: 1;
-      }
-      to {
-        height: 58px;
-        opacity: 1;
-      }
-    }
-
-    @keyframes pulseDot {
-      0%, 100% {
-        box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.14);
-      }
-      50% {
-        box-shadow: 0 0 0 10px rgba(34, 197, 94, 0.08);
-      }
-    }
-
-    @media (max-width: 920px) {
-      .app {
-        grid-template-columns: 1fr;
-        min-height: auto;
-      }
-
-      .left-panel {
-        padding: 28px 24px;
-      }
-
-      .bottom-help {
+    @media (max-width: 700px) {
+      .help-row {
         grid-template-columns: 1fr;
       }
 
-      #reader {
-        min-height: 300px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      body {
-        padding: 12px;
-      }
-
-      .left-panel,
-      .right-panel {
-        padding: 18px;
-      }
-
-      .scanner-card {
-        padding: 16px;
-      }
-
-      .modal,
-      .auth-card {
-        padding: 24px 18px 18px;
-      }
-
-      .modal h2 {
+      h1 {
         font-size: 1.7rem;
       }
 
-      .modal p {
-        font-size: 1rem;
+      .modal-title-large {
+        font-size: 2.3rem !important;
+      }
+
+      .modal-name,
+      .modal-seat {
+        font-size: 1.5rem;
       }
 
       .modal-icon {
-        width: 100px;
-        height: 100px;
+        font-size: 4.5rem;
       }
     }
   </style>
@@ -761,9 +319,8 @@
 <body>
   <div id="authOverlay" class="auth-overlay">
     <div class="auth-card">
-      <div class="auth-badge">Protected Access</div>
       <h2>Student Check-In</h2>
-      <p>Enter the page password to open the scanner.</p>
+      <p>Enter the password to open the scanner.</p>
       <input
         id="authInput"
         class="auth-input"
@@ -773,115 +330,65 @@
       />
       <div id="authError" class="auth-error"></div>
       <button id="authBtn" class="auth-btn">Enter</button>
-      <div class="auth-note">This device will stay signed in until the tab is closed.</div>
     </div>
   </div>
 
-  <div class="app">
-    <section class="panel left-panel">
-      <div>
-        <div class="brand">
-          <div class="badge">Student Self Check-In</div>
-          <h1>Scan your QR code to mark your arrival.</h1>
-          <p class="subtitle">
-            Hold your QR code steady in front of the camera. Once scanned, your check-in will be completed automatically.
-          </p>
-        </div>
+  <div class="page">
+    <div class="card">
+      <h1>Student Check-In</h1>
+      <p class="subtitle">Scan your QR code. After checking in, please sit in the sitting area.</p>
 
-        <div class="info-cards">
-          <div class="info-card">
-            <div class="info-icon">1</div>
-            <div>
-              <h3>Scan your code</h3>
-              <p>Place your QR code inside the camera area until it is recognised.</p>
-            </div>
-          </div>
+      <div id="status" class="status neutral">Point the camera at a QR code</div>
 
-          <div class="info-card">
-            <div class="info-icon">2</div>
-            <div>
-              <h3>Wait for the screen</h3>
-              <p>You will see a large check-in message if your scan is successful.</p>
-            </div>
-          </div>
+      <div id="reader"></div>
 
-          <div class="info-card">
-            <div class="info-icon">3</div>
-            <div>
-              <h3>Take a seat</h3>
-              <p>After check-in, please sit in the sitting area and wait for further instructions.</p>
-            </div>
-          </div>
-        </div>
+      <div class="trouble-wrap">
+        <button id="toggleSearchBtn" class="trouble-btn">Having trouble?</button>
       </div>
 
-      <div class="footer-note">
-        If your QR code does not work, please see a teacher.
+      <div id="searchPanel" class="search-panel">
+        <input
+          id="searchInput"
+          class="search-input"
+          type="text"
+          placeholder="Search student name or code"
+          autocomplete="off"
+        />
+        <div id="searchResults" class="search-results"></div>
       </div>
-    </section>
 
-    <section class="panel right-panel">
-      <div class="scanner-card">
-        <div class="scanner-top">
-          <h2 class="scanner-title">Live Scanner</h2>
-          <div class="live-pill">
-            <span class="dot"></span>
-            Camera ready
-          </div>
+      <div class="help-row">
+        <div class="help-box">
+          <strong>1. Scan</strong>
+          Hold your QR code in front of the camera.
         </div>
-
-        <div id="status" class="status neutral">Point the camera at a QR code</div>
-
-        <div id="reader"></div>
-
-        <div class="trouble-wrap">
-          <button id="toggleSearchBtn" class="trouble-btn">Having trouble?</button>
+        <div class="help-box">
+          <strong>2. Check In</strong>
+          Wait for your name and tick to appear.
         </div>
-
-        <div id="searchPanel" class="search-panel">
-          <input
-            id="searchInput"
-            class="search-input"
-            type="text"
-            placeholder="Search student name or code"
-            autocomplete="off"
-          />
-          <div id="searchResults" class="search-results"></div>
-          <div class="search-note">Use this only if a QR code is damaged or not scanning.</div>
-        </div>
-
-        <div class="bottom-help">
-          <div class="help-box">
-            <strong>Hold Still</strong>
-            <span>Keep the QR code steady for a moment.</span>
-          </div>
-          <div class="help-box">
-            <strong>Good Lighting</strong>
-            <span>Move to brighter light if the code will not scan.</span>
-          </div>
-          <div class="help-box">
-            <strong>See a Teacher</strong>
-            <span>If your code is not working, a teacher can help.</span>
-          </div>
+        <div class="help-box">
+          <strong>3. Sit Down</strong>
+          Sit in the sitting area and wait.
         </div>
       </div>
-    </section>
+    </div>
   </div>
 
   <div id="overlay" class="overlay">
     <div class="modal">
-      <div id="modalIcon" class="modal-icon loading">
-        <div class="spinner"></div>
-      </div>
+      <div id="modalIcon" class="modal-icon loading">Loading...</div>
       <h2 id="modalTitle">Checking In</h2>
-      <p id="modalMessage">Loading...</p>
-      <div id="modalSubtext" class="modal-subtext hidden"></div>
+      <p id="modalMessage">Please wait...</p>
+      <div id="modalSeat" class="modal-seat" style="display:none;"></div>
+      <div id="countdown" class="countdown" style="display:none;"></div>
     </div>
   </div>
 
   <script>
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyRvVYUupmFYA_TqdlGwgUdpOD1vGUYV42cGplkoM8DE49kfJ0j9yDNT1Xc75sJag/exec";
     const PAGE_PASSWORD = "Chatswood1";
+    const SUCCESS_CLOSE_SECONDS = 5;
+    const ERROR_CLOSE_SECONDS = 5;
 
     const authOverlay = document.getElementById("authOverlay");
     const authInput = document.getElementById("authInput");
@@ -893,7 +400,8 @@
     const modalIcon = document.getElementById("modalIcon");
     const modalTitle = document.getElementById("modalTitle");
     const modalMessage = document.getElementById("modalMessage");
-    const modalSubtext = document.getElementById("modalSubtext");
+    const modalSeat = document.getElementById("modalSeat");
+    const countdownEl = document.getElementById("countdown");
 
     const toggleSearchBtn = document.getElementById("toggleSearchBtn");
     const searchPanel = document.getElementById("searchPanel");
@@ -903,6 +411,7 @@
     let scanner;
     let busy = false;
     let searchTimer;
+    let countdownInterval;
 
     function isAuthenticated() {
       return sessionStorage.getItem("scanner_auth") === "true";
@@ -943,35 +452,77 @@
 
     function hideOverlay() {
       overlay.classList.remove("show");
+      clearInterval(countdownInterval);
+      countdownEl.style.display = "none";
+      modalSeat.style.display = "none";
     }
 
-    function setModal(type, title, message, subtext = "", subtextClass = "") {
-      modalTitle.textContent = title;
-      modalMessage.textContent = message;
+    function startCountdown(seconds) {
+      clearInterval(countdownInterval);
+      let remaining = seconds;
+      countdownEl.style.display = "block";
+      countdownEl.textContent = `This message will close in ${remaining} seconds`;
 
-      modalIcon.className = `modal-icon ${type}`;
-      modalSubtext.textContent = subtext;
-      modalSubtext.className = "modal-subtext";
+      countdownInterval = setInterval(() => {
+        remaining -= 1;
+        if (remaining <= 0) {
+          clearInterval(countdownInterval);
+          countdownEl.textContent = "Closing...";
+        } else {
+          countdownEl.textContent = `This message will close in ${remaining} seconds`;
+        }
+      }, 1000);
+    }
 
-      if (subtext) {
-        modalSubtext.classList.remove("hidden");
-        if (subtextClass) modalSubtext.classList.add(subtextClass);
-      } else {
-        modalSubtext.classList.add("hidden");
-      }
-
-      if (type === "loading") {
-        modalIcon.innerHTML = '<div class="spinner"></div>';
-      } else if (type === "success") {
-        modalIcon.innerHTML = '<div class="success-ring"></div><div class="tick"></div>';
-      } else if (type === "error") {
-        modalIcon.textContent = "!";
-      }
-
+    function setModalLoading() {
+      modalIcon.className = "modal-icon loading";
+      modalIcon.textContent = "Loading...";
+      modalTitle.className = "";
+      modalTitle.textContent = "Checking In";
+      modalMessage.textContent = "Please wait...";
+      modalSeat.style.display = "none";
+      countdownEl.style.display = "none";
       showOverlay();
     }
 
-    async function resumeScanning(delay = 1000) {
+    function setModalSuccess(name) {
+      modalIcon.className = "modal-icon success";
+      modalIcon.textContent = "✓";
+      modalTitle.className = "modal-title-large";
+      modalTitle.textContent = "Checked In";
+      modalMessage.textContent = "";
+      modalSeat.className = "modal-seat";
+      modalSeat.textContent = "Please sit in the sitting area";
+      modalSeat.style.display = "block";
+      countdownEl.style.display = "block";
+      showOverlay();
+      if (name) {
+        modalMessage.textContent = name;
+        modalMessage.className = "modal-name";
+      }
+      startCountdown(SUCCESS_CLOSE_SECONDS);
+    }
+
+    function setModalError(title, message, subMessage = "") {
+      modalIcon.className = "modal-icon error";
+      modalIcon.textContent = "!";
+      modalTitle.className = "modal-title-large";
+      modalTitle.textContent = title;
+      modalMessage.className = "modal-name";
+      modalMessage.textContent = message;
+      if (subMessage) {
+        modalSeat.className = "modal-seat error";
+        modalSeat.textContent = subMessage;
+        modalSeat.style.display = "block";
+      } else {
+        modalSeat.style.display = "none";
+      }
+      countdownEl.style.display = "block";
+      showOverlay();
+      startCountdown(ERROR_CLOSE_SECONDS);
+    }
+
+    async function resumeScanning(delay = 5000) {
       setTimeout(async () => {
         try {
           hideOverlay();
@@ -1054,26 +605,26 @@
     async function processAutomaticCheckIn(code) {
       try {
         setStatus("Checking code...", "loading");
-        setModal("loading", "Checking In", "Loading...");
+        setModalLoading();
 
         const lookup = await lookupCode(code);
 
         if (!lookup.success) {
           const message = lookup.name
-            ? `${lookup.error} (${lookup.name})`
-            : (lookup.error === "Code not recognised" ? "Please see a teacher." : lookup.error);
+            ? lookup.name
+            : "This QR code could not be recognised.";
 
-          setStatus(message, "error");
+          setStatus(lookup.error === "Code not recognised" ? "Please see a teacher." : lookup.error, "error");
 
           if (lookup.error === "Code not recognised") {
-            setModal("error", "Please See a Teacher", "This QR code could not be recognised.", "Ask a teacher for help.", "warning");
+            setModalError("Please See a Teacher", message, "Ask a teacher for help.");
           } else if (lookup.error === "Already checked in") {
-            setModal("error", "Already Checked In", lookup.name || "This student has already checked in.", "Please see a teacher if this is incorrect.", "error");
+            setModalError("Already Checked In", message, "Please see a teacher if this is incorrect.");
           } else {
-            setModal("error", "Unable to Check In", message, "Please see a teacher.", "warning");
+            setModalError("Unable to Check In", message, "Please see a teacher.");
           }
 
-          await resumeScanning(1200);
+          await resumeScanning(ERROR_CLOSE_SECONDS * 1000);
           return;
         }
 
@@ -1081,35 +632,26 @@
 
         if (result.success) {
           setStatus("Checked in: " + result.name, "success");
-          setModal(
-            "success",
-            "Checked In",
-            result.name,
-            "Please sit in the sitting area.",
-            ""
-          );
-          await resumeScanning(4000);
+          setModalSuccess(result.name);
+          await resumeScanning(SUCCESS_CLOSE_SECONDS * 1000);
         } else {
-          const message = result.name
-            ? `${result.error} (${result.name})`
-            : (result.error === "Code not recognised" ? "Please see a teacher." : result.error);
-
-          setStatus(message, "error");
+          const message = result.name || "This QR code could not be recognised.";
+          setStatus(result.error === "Code not recognised" ? "Please see a teacher." : result.error, "error");
 
           if (result.error === "Already checked in") {
-            setModal("error", "Already Checked In", result.name || "This student has already checked in.", "Please see a teacher if this is incorrect.", "error");
+            setModalError("Already Checked In", message, "Please see a teacher if this is incorrect.");
           } else if (result.error === "Code not recognised") {
-            setModal("error", "Please See a Teacher", "This QR code could not be recognised.", "Ask a teacher for help.", "warning");
+            setModalError("Please See a Teacher", message, "Ask a teacher for help.");
           } else {
-            setModal("error", "Unable to Check In", message, "Please see a teacher.", "warning");
+            setModalError("Unable to Check In", message, "Please see a teacher.");
           }
 
-          await resumeScanning(1200);
+          await resumeScanning(ERROR_CLOSE_SECONDS * 1000);
         }
       } catch (err) {
         setStatus("Could not connect", "error");
-        setModal("error", "Please See a Teacher", "There was a connection problem.", "Ask a teacher for help.", "warning");
-        await resumeScanning(1200);
+        setModalError("Please See a Teacher", "There was a connection problem.", "Ask a teacher for help.");
+        await resumeScanning(ERROR_CLOSE_SECONDS * 1000);
       }
     }
 
@@ -1138,8 +680,8 @@
 
       if (checkedIn) {
         setStatus(`Already checked in (${name})`, "error");
-        setModal("error", "Already Checked In", name, "Please see a teacher if this is incorrect.", "error");
-        await resumeScanning(1200);
+        setModalError("Already Checked In", name, "Please see a teacher if this is incorrect.");
+        await resumeScanning(ERROR_CLOSE_SECONDS * 1000);
         return;
       }
 
