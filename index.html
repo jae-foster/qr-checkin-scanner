@@ -1010,7 +1010,7 @@
 
         if (result.success) {
           setStatus("Checked in: " + result.name, "success");
-          setModal("success", "Checked In", `${result.name} has been checked in successfully.`, "message");
+          setModal("success", "Checked In", `${result.name} has been checked in successfully. Please sit down.`, "message");
         } else {
           const message = result.name
             ? `${result.error} (${result.name})`
