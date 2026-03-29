@@ -676,7 +676,7 @@
 
     function setSuccessPopup(name) {
       popupBox.className = "popup success";
-      popupIcon.textContent = "✓";
+      popupIcon.innerHTML = '<span style="font-size: 11rem; font-weight: bold;">✓</span>';
       popupTitle.textContent = "Checked In";
       popupName.textContent = name;
       popupName.style.display = "block";
@@ -687,7 +687,7 @@
 
     function setErrorPopup(title, nameOrMessage, message) {
       popupBox.className = "popup error";
-      popupIcon.textContent = "!";
+      popupIcon.innerHTML = '<span style="font-size: 11rem; font-weight: bold;">!</span>';
       popupTitle.textContent = title;
 
       if (nameOrMessage) {
