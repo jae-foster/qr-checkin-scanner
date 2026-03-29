@@ -10,11 +10,33 @@
       box-sizing: border-box;
     }
 
+    :root {
+      --navy: #14213d;
+      --navy-dark: #0d172c;
+      --orange: #f28c28;
+      --orange-dark: #d97706;
+      --bg: #f5f7fb;
+      --white: #ffffff;
+      --text: #14213d;
+      --muted: #5b6475;
+      --border: #d9e0ea;
+      --success-bg: #ecfdf3;
+      --success-text: #166534;
+      --error-bg: #fef2f2;
+      --error-text: #b91c1c;
+      --warning-bg: #fff7ed;
+      --warning-text: #c2410c;
+      --shadow: 0 14px 34px rgba(20, 33, 61, 0.12);
+      --radius: 22px;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      color: #111827;
+      background:
+        linear-gradient(135deg, rgba(20,33,61,0.97), rgba(13,23,44,0.97));
+      color: var(--text);
+      min-height: 100vh;
     }
 
     .auth-overlay,
@@ -24,176 +46,192 @@
       display: none;
       align-items: center;
       justify-content: center;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(8, 12, 24, 0.72);
       z-index: 9999;
-      padding: 20px;
+      padding: 24px;
     }
 
     .auth-overlay {
       display: flex;
     }
 
-    .auth-card,
-    .modal {
+    .auth-card {
       width: 100%;
-      max-width: 520px;
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 28px 24px;
+      max-width: 460px;
+      background: var(--white);
+      border-radius: 24px;
+      padding: 30px 26px;
       text-align: center;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.22);
+      border-top: 8px solid var(--orange);
     }
 
-    .auth-card h2,
-    .modal h2 {
+    .auth-card h2 {
       margin: 0 0 12px 0;
       font-size: 2rem;
+      color: var(--navy);
     }
 
-    .auth-card p,
-    .modal p {
-      margin: 0;
+    .auth-card p {
+      margin: 0 0 18px 0;
+      color: var(--muted);
+      font-size: 1rem;
       line-height: 1.5;
     }
 
     .auth-input,
     .search-input {
       width: 100%;
-      padding: 14px;
+      padding: 15px 16px;
       font-size: 16px;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      margin-top: 14px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
       outline: none;
+      transition: 0.15s ease;
+    }
+
+    .auth-input:focus,
+    .search-input:focus {
+      border-color: var(--orange);
     }
 
     .auth-btn {
       width: 100%;
       margin-top: 12px;
-      padding: 14px;
+      padding: 15px;
       border: none;
-      border-radius: 10px;
-      background: #2563eb;
-      color: white;
+      border-radius: 12px;
+      background: var(--orange);
+      color: var(--white);
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
     }
 
+    .auth-btn:hover {
+      background: var(--orange-dark);
+    }
+
     .auth-error {
       min-height: 22px;
-      color: #b91c1c;
+      color: var(--error-text);
       margin-top: 10px;
       font-size: 14px;
     }
 
     .page {
-      max-width: 900px;
+      max-width: 980px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 28px 20px;
+    }
+
+    .top-banner {
+      text-align: center;
+      color: var(--white);
+      margin-bottom: 18px;
+    }
+
+    .top-banner h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: bold;
+      letter-spacing: 0.2px;
+    }
+
+    .top-banner p {
+      margin: 10px 0 0 0;
+      font-size: 1.1rem;
+      color: #d7def0;
     }
 
     .card {
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      background: var(--white);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      border-top: 10px solid var(--orange);
     }
 
-    h1 {
+    .main-instruction {
+      text-align: center;
+      font-size: 2.1rem;
+      font-weight: bold;
+      color: var(--navy);
       margin: 0 0 10px 0;
-      font-size: 2rem;
-      text-align: center;
     }
 
-    .subtitle {
-      margin: 0 0 22px 0;
+    .sub-instruction {
       text-align: center;
-      color: #4b5563;
-      font-size: 1rem;
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin: 0 0 22px 0;
     }
 
     .status {
-      padding: 14px 16px;
-      border-radius: 12px;
+      padding: 16px 18px;
+      border-radius: 14px;
       text-align: center;
       font-weight: bold;
       margin-bottom: 18px;
-      font-size: 1rem;
+      font-size: 1.08rem;
+      border: 2px solid transparent;
     }
 
     .status.neutral {
-      background: #e5efff;
+      background: #eef4ff;
       color: #1d4ed8;
+      border-color: #c9dcff;
     }
 
     .status.loading {
-      background: #fff4d6;
-      color: #92400e;
+      background: var(--warning-bg);
+      color: var(--warning-text);
+      border-color: #fed7aa;
     }
 
     .status.success {
-      background: #dcfce7;
-      color: #166534;
+      background: var(--success-bg);
+      color: var(--success-text);
+      border-color: #bbf7d0;
     }
 
     .status.error {
-      background: #fee2e2;
-      color: #991b1b;
+      background: var(--error-bg);
+      color: var(--error-text);
+      border-color: #fecaca;
     }
 
     #reader {
       width: 100%;
-      min-height: 340px;
-      border-radius: 14px;
+      min-height: 390px;
+      border-radius: 18px;
       overflow: hidden;
-      border: 2px solid #e5e7eb;
-      background: #f9fafb;
-    }
-
-    .help-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .help-box {
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 14px;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    .help-box strong {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 15px;
+      border: 3px solid #e6ebf2;
+      background: #f8fafc;
     }
 
     .trouble-wrap {
       text-align: center;
-      margin-top: 14px;
+      margin-top: 16px;
     }
 
     .trouble-btn {
       background: none;
       border: none;
-      color: #4b5563;
-      font-size: 14px;
+      color: var(--navy);
+      font-size: 15px;
       cursor: pointer;
       text-decoration: underline;
+      font-weight: bold;
     }
 
     .search-panel {
       display: none;
       margin-top: 14px;
-      padding: 14px;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
+      padding: 16px;
+      background: #f8fafc;
+      border: 2px solid #e6ebf2;
+      border-radius: 14px;
     }
 
     .search-panel.show {
@@ -209,109 +247,179 @@
     .result-item {
       width: 100%;
       text-align: left;
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 12px;
+      background: var(--white);
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 13px 14px;
       margin-bottom: 8px;
       cursor: pointer;
     }
 
+    .result-item:hover {
+      border-color: #cbd5e1;
+      background: #fafafa;
+    }
+
     .result-name {
       font-weight: bold;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
+      color: var(--navy);
+      font-size: 1rem;
     }
 
     .result-meta {
       font-size: 13px;
-      color: #6b7280;
+      color: var(--muted);
     }
 
     .result-badge {
       display: inline-block;
-      margin-top: 6px;
+      margin-top: 7px;
       padding: 4px 8px;
       border-radius: 999px;
-      background: #fee2e2;
-      color: #991b1b;
+      background: var(--error-bg);
+      color: var(--error-text);
       font-size: 11px;
       font-weight: bold;
     }
 
-    .modal {
-      max-width: 600px;
+    .simple-help {
+      margin-top: 20px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.5;
     }
 
-    .modal-icon {
-      font-size: 6rem;
+    .overlay.show {
+      display: flex;
+    }
+
+    .popup {
+      width: min(92vw, 900px);
+      min-height: 68vh;
+      background: var(--white);
+      border-radius: 30px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 36px 28px;
+      border-top: 16px solid var(--orange);
+    }
+
+    .popup.success {
+      background: var(--success-bg);
+    }
+
+    .popup.error {
+      background: var(--error-bg);
+    }
+
+    .popup.loading {
+      background: var(--warning-bg);
+    }
+
+    .popup-icon {
+      font-size: 8rem;
       line-height: 1;
       font-weight: bold;
-      margin-bottom: 16px;
-    }
-
-    .modal-icon.success {
-      color: #15803d;
-    }
-
-    .modal-icon.error {
-      color: #b91c1c;
-    }
-
-    .modal-icon.loading {
-      color: #b45309;
-      font-size: 2.3rem;
-    }
-
-    .modal-title-large {
-      font-size: 3rem !important;
-      margin-bottom: 10px !important;
-    }
-
-    .modal-name {
-      font-size: 2rem;
-      font-weight: bold;
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
-
-    .modal-seat {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #166534;
-      margin-top: 14px;
       margin-bottom: 18px;
     }
 
-    .modal-seat.error {
-      color: #991b1b;
+    .popup.success .popup-icon {
+      color: var(--success-text);
+    }
+
+    .popup.error .popup-icon {
+      color: var(--error-text);
+    }
+
+    .popup.loading .popup-icon {
+      color: var(--warning-text);
+      font-size: 3rem;
+    }
+
+    .popup-title {
+      font-size: 4rem;
+      font-weight: bold;
+      margin: 0 0 14px 0;
+      color: var(--navy);
+      line-height: 1.05;
+    }
+
+    .popup-name {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--navy);
+      margin: 0 0 18px 0;
+      line-height: 1.2;
+      max-width: 95%;
+      word-break: break-word;
+    }
+
+    .popup-message {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: var(--navy);
+      margin: 0 0 18px 0;
+      line-height: 1.25;
+      max-width: 95%;
+    }
+
+    .popup.success .popup-message {
+      color: var(--success-text);
+    }
+
+    .popup.error .popup-message {
+      color: var(--error-text);
     }
 
     .countdown {
-      font-size: 1rem;
-      color: #6b7280;
-      margin-top: 8px;
+      font-size: 1.35rem;
+      color: var(--muted);
+      margin-top: 10px;
+      font-weight: bold;
     }
 
-    @media (max-width: 700px) {
-      .help-row {
-        grid-template-columns: 1fr;
+    @media (max-width: 800px) {
+      .top-banner h1 {
+        font-size: 2rem;
       }
 
-      h1 {
+      .main-instruction {
+        font-size: 1.75rem;
+      }
+
+      #reader {
+        min-height: 300px;
+      }
+
+      .popup {
+        min-height: 62vh;
+        padding: 28px 20px;
+      }
+
+      .popup-icon {
+        font-size: 6rem;
+      }
+
+      .popup-title {
+        font-size: 2.7rem;
+      }
+
+      .popup-name {
+        font-size: 2rem;
+      }
+
+      .popup-message {
         font-size: 1.7rem;
       }
 
-      .modal-title-large {
-        font-size: 2.3rem !important;
-      }
-
-      .modal-name,
-      .modal-seat {
-        font-size: 1.5rem;
-      }
-
-      .modal-icon {
-        font-size: 4.5rem;
+      .countdown {
+        font-size: 1.1rem;
       }
     }
   </style>
@@ -334,9 +442,14 @@
   </div>
 
   <div class="page">
+    <div class="top-banner">
+      <h1>Chatswood High School</h1>
+      <p>Student Check-In</p>
+    </div>
+
     <div class="card">
-      <h1>Student Check-In</h1>
-      <p class="subtitle">Scan your QR code. After checking in, please sit in the sitting area.</p>
+      <h2 class="main-instruction">Scan your QR code</h2>
+      <p class="sub-instruction">Hold your QR code in front of the camera.</p>
 
       <div id="status" class="status neutral">Point the camera at a QR code</div>
 
@@ -357,29 +470,18 @@
         <div id="searchResults" class="search-results"></div>
       </div>
 
-      <div class="help-row">
-        <div class="help-box">
-          <strong>1. Scan</strong>
-          Hold your QR code in front of the camera.
-        </div>
-        <div class="help-box">
-          <strong>2. Check In</strong>
-          Wait for your name and tick to appear.
-        </div>
-        <div class="help-box">
-          <strong>3. Sit Down</strong>
-          Sit in the sitting area and wait.
-        </div>
+      <div class="simple-help">
+        If your QR code does not work, please see a teacher.
       </div>
     </div>
   </div>
 
   <div id="overlay" class="overlay">
-    <div class="modal">
-      <div id="modalIcon" class="modal-icon loading">Loading...</div>
-      <h2 id="modalTitle">Checking In</h2>
-      <p id="modalMessage">Please wait...</p>
-      <div id="modalSeat" class="modal-seat" style="display:none;"></div>
+    <div id="popupBox" class="popup loading">
+      <div id="popupIcon" class="popup-icon">Loading...</div>
+      <h2 id="popupTitle" class="popup-title">Checking In</h2>
+      <div id="popupName" class="popup-name" style="display:none;"></div>
+      <div id="popupMessage" class="popup-message">Please wait...</div>
       <div id="countdown" class="countdown" style="display:none;"></div>
     </div>
   </div>
@@ -397,10 +499,11 @@
 
     const statusBox = document.getElementById("status");
     const overlay = document.getElementById("overlay");
-    const modalIcon = document.getElementById("modalIcon");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalMessage = document.getElementById("modalMessage");
-    const modalSeat = document.getElementById("modalSeat");
+    const popupBox = document.getElementById("popupBox");
+    const popupIcon = document.getElementById("popupIcon");
+    const popupTitle = document.getElementById("popupTitle");
+    const popupName = document.getElementById("popupName");
+    const popupMessage = document.getElementById("popupMessage");
     const countdownEl = document.getElementById("countdown");
 
     const toggleSearchBtn = document.getElementById("toggleSearchBtn");
@@ -454,14 +557,14 @@
       overlay.classList.remove("show");
       clearInterval(countdownInterval);
       countdownEl.style.display = "none";
-      modalSeat.style.display = "none";
+      popupName.style.display = "none";
     }
 
     function startCountdown(seconds) {
       clearInterval(countdownInterval);
       let remaining = seconds;
       countdownEl.style.display = "block";
-      countdownEl.textContent = `This message will close in ${remaining} seconds`;
+      countdownEl.textContent = `Closing in ${remaining} seconds`;
 
       countdownInterval = setInterval(() => {
         remaining -= 1;
@@ -469,60 +572,50 @@
           clearInterval(countdownInterval);
           countdownEl.textContent = "Closing...";
         } else {
-          countdownEl.textContent = `This message will close in ${remaining} seconds`;
+          countdownEl.textContent = `Closing in ${remaining} seconds`;
         }
       }, 1000);
     }
 
-    function setModalLoading() {
-      modalIcon.className = "modal-icon loading";
-      modalIcon.textContent = "Loading...";
-      modalTitle.className = "";
-      modalTitle.textContent = "Checking In";
-      modalMessage.textContent = "Please wait...";
-      modalSeat.style.display = "none";
+    function setLoadingPopup() {
+      popupBox.className = "popup loading";
+      popupIcon.textContent = "Loading...";
+      popupTitle.textContent = "Checking In";
+      popupName.style.display = "none";
+      popupMessage.textContent = "Please wait...";
       countdownEl.style.display = "none";
       showOverlay();
     }
 
-    function setModalSuccess(name) {
-      modalIcon.className = "modal-icon success";
-      modalIcon.textContent = "✓";
-      modalTitle.className = "modal-title-large";
-      modalTitle.textContent = "Checked In";
-      modalMessage.textContent = "";
-      modalSeat.className = "modal-seat";
-      modalSeat.textContent = "Please sit in the sitting area";
-      modalSeat.style.display = "block";
-      countdownEl.style.display = "block";
+    function setSuccessPopup(name) {
+      popupBox.className = "popup success";
+      popupIcon.textContent = "✓";
+      popupTitle.textContent = "Checked In";
+      popupName.textContent = name;
+      popupName.style.display = "block";
+      popupMessage.textContent = "Sit down in the seating area";
       showOverlay();
-      if (name) {
-        modalMessage.textContent = name;
-        modalMessage.className = "modal-name";
-      }
       startCountdown(SUCCESS_CLOSE_SECONDS);
     }
 
-    function setModalError(title, message, subMessage = "") {
-      modalIcon.className = "modal-icon error";
-      modalIcon.textContent = "!";
-      modalTitle.className = "modal-title-large";
-      modalTitle.textContent = title;
-      modalMessage.className = "modal-name";
-      modalMessage.textContent = message;
-      if (subMessage) {
-        modalSeat.className = "modal-seat error";
-        modalSeat.textContent = subMessage;
-        modalSeat.style.display = "block";
+    function setErrorPopup(title, nameOrMessage, message) {
+      popupBox.className = "popup error";
+      popupIcon.textContent = "!";
+      popupTitle.textContent = title;
+
+      if (nameOrMessage) {
+        popupName.textContent = nameOrMessage;
+        popupName.style.display = "block";
       } else {
-        modalSeat.style.display = "none";
+        popupName.style.display = "none";
       }
-      countdownEl.style.display = "block";
+
+      popupMessage.textContent = message;
       showOverlay();
       startCountdown(ERROR_CLOSE_SECONDS);
     }
 
-    async function resumeScanning(delay = 5000) {
+    async function resumeScanning(delayMs) {
       setTimeout(async () => {
         try {
           hideOverlay();
@@ -532,7 +625,7 @@
           setStatus("Scanner could not resume", "error");
         }
         busy = false;
-      }, delay);
+      }, delayMs);
     }
 
     async function startScanner() {
@@ -605,23 +698,22 @@
     async function processAutomaticCheckIn(code) {
       try {
         setStatus("Checking code...", "loading");
-        setModalLoading();
+        setLoadingPopup();
 
         const lookup = await lookupCode(code);
 
         if (!lookup.success) {
-          const message = lookup.name
-            ? lookup.name
-            : "This QR code could not be recognised.";
-
-          setStatus(lookup.error === "Code not recognised" ? "Please see a teacher." : lookup.error, "error");
+          setStatus(
+            lookup.error === "Code not recognised" ? "Please see a teacher." : lookup.error,
+            "error"
+          );
 
           if (lookup.error === "Code not recognised") {
-            setModalError("Please See a Teacher", message, "Ask a teacher for help.");
+            setErrorPopup("Please See a Teacher", "", "This QR code could not be recognised.");
           } else if (lookup.error === "Already checked in") {
-            setModalError("Already Checked In", message, "Please see a teacher if this is incorrect.");
+            setErrorPopup("Already Checked In", lookup.name || "", "Please see a teacher if this is incorrect.");
           } else {
-            setModalError("Unable to Check In", message, "Please see a teacher.");
+            setErrorPopup("Unable to Check In", lookup.name || "", "Please see a teacher.");
           }
 
           await resumeScanning(ERROR_CLOSE_SECONDS * 1000);
@@ -632,25 +724,27 @@
 
         if (result.success) {
           setStatus("Checked in: " + result.name, "success");
-          setModalSuccess(result.name);
+          setSuccessPopup(result.name);
           await resumeScanning(SUCCESS_CLOSE_SECONDS * 1000);
         } else {
-          const message = result.name || "This QR code could not be recognised.";
-          setStatus(result.error === "Code not recognised" ? "Please see a teacher." : result.error, "error");
+          setStatus(
+            result.error === "Code not recognised" ? "Please see a teacher." : result.error,
+            "error"
+          );
 
           if (result.error === "Already checked in") {
-            setModalError("Already Checked In", message, "Please see a teacher if this is incorrect.");
+            setErrorPopup("Already Checked In", result.name || "", "Please see a teacher if this is incorrect.");
           } else if (result.error === "Code not recognised") {
-            setModalError("Please See a Teacher", message, "Ask a teacher for help.");
+            setErrorPopup("Please See a Teacher", "", "This QR code could not be recognised.");
           } else {
-            setModalError("Unable to Check In", message, "Please see a teacher.");
+            setErrorPopup("Unable to Check In", result.name || "", "Please see a teacher.");
           }
 
           await resumeScanning(ERROR_CLOSE_SECONDS * 1000);
         }
       } catch (err) {
         setStatus("Could not connect", "error");
-        setModalError("Please See a Teacher", "There was a connection problem.", "Ask a teacher for help.");
+        setErrorPopup("Please See a Teacher", "", "There was a connection problem.");
         await resumeScanning(ERROR_CLOSE_SECONDS * 1000);
       }
     }
@@ -680,7 +774,7 @@
 
       if (checkedIn) {
         setStatus(`Already checked in (${name})`, "error");
-        setModalError("Already Checked In", name, "Please see a teacher if this is incorrect.");
+        setErrorPopup("Already Checked In", name, "Please see a teacher if this is incorrect.");
         await resumeScanning(ERROR_CLOSE_SECONDS * 1000);
         return;
       }
