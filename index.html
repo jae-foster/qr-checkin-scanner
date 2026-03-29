@@ -349,28 +349,35 @@
       background: linear-gradient(180deg, #fffaf2, #fff7ed);
     }
 
-    .popup-icon {
-      margin-bottom: 26px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 180px;
-    }
+   .popup-icon {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+}
 
-    .popup-icon.success,
-    .popup-icon.error {
-      font-size: 100rem;
-      line-height: 1;
-      font-weight: bold;
-    }
+.popup-icon.success,
+.popup-icon.error {
+  font-size: 0;
+  line-height: 1;
+}
 
-    .popup.success .popup-icon {
-      color: var(--success-text);
-    }
+.popup-icon.success::before,
+.popup-icon.error::before {
+  display: block;
+  font-size: 11rem;
+  font-weight: bold;
+  line-height: 1;
+}
 
-    .popup.error .popup-icon {
-      color: var(--error-text);
-    }
+.popup-icon.success::before {
+  content: "✓";
+}
+
+.popup-icon.error::before {
+  content: "!";
+}
 
     .spinner-wrap {
       display: flex;
@@ -675,32 +682,34 @@
     }
 
     function setSuccessPopup(name) {
-      popupBox.className = "popup success";
-      popupIcon.innerHTML = '<span style="font-size: 11rem; font-weight: bold;">✓</span>';
-      popupTitle.textContent = "Checked In";
-      popupName.textContent = name;
-      popupName.style.display = "block";
-      popupMessage.textContent = "Sit down in the seating area";
-      showOverlay();
-      startCountdown(SUCCESS_CLOSE_SECONDS);
-    }
+  popupBox.className = "popup success";
+  popupIcon.className = "popup-icon success";
+  popupIcon.textContent = "";
+  popupTitle.textContent = "Checked In";
+  popupName.textContent = name;
+  popupName.style.display = "block";
+  popupMessage.textContent = "Sit down in the seating area";
+  showOverlay();
+  startCountdown(SUCCESS_CLOSE_SECONDS);
+}
 
     function setErrorPopup(title, nameOrMessage, message) {
-      popupBox.className = "popup error";
-      popupIcon.innerHTML = '<span style="font-size: 11rem; font-weight: bold;">!</span>';
-      popupTitle.textContent = title;
+  popupBox.className = "popup error";
+  popupIcon.className = "popup-icon error";
+  popupIcon.textContent = "";
+  popupTitle.textContent = title;
 
-      if (nameOrMessage) {
-        popupName.textContent = nameOrMessage;
-        popupName.style.display = "block";
-      } else {
-        popupName.style.display = "none";
-      }
+  if (nameOrMessage) {
+    popupName.textContent = nameOrMessage;
+    popupName.style.display = "block";
+  } else {
+    popupName.style.display = "none";
+  }
 
-      popupMessage.textContent = message;
-      showOverlay();
-      startCountdown(ERROR_CLOSE_SECONDS);
-    }
+  popupMessage.textContent = message;
+  showOverlay();
+  startCountdown(ERROR_CLOSE_SECONDS);
+}
 
     async function resumeScanning(delayMs) {
       setTimeout(async () => {
