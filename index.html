@@ -12,31 +12,35 @@
 
     :root {
       --navy: #14213d;
-      --navy-dark: #0d172c;
+      --navy-dark: #0b1730;
       --orange: #f28c28;
-      --orange-dark: #d97706;
-      --bg: #f5f7fb;
+      --orange-dark: #dc7b19;
+      --bg-light: #f4f7fb;
       --white: #ffffff;
       --text: #14213d;
-      --muted: #5b6475;
-      --border: #d9e0ea;
+      --muted: #64748b;
+      --border: #d9e2ec;
       --success-bg: #ecfdf3;
       --success-text: #166534;
       --error-bg: #fef2f2;
       --error-text: #b91c1c;
       --warning-bg: #fff7ed;
       --warning-text: #c2410c;
-      --shadow: 0 14px 34px rgba(20, 33, 61, 0.12);
-      --radius: 22px;
+      --shadow: 0 20px 50px rgba(20, 33, 61, 0.14);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
     }
 
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background:
-        linear-gradient(135deg, rgba(20,33,61,0.97), rgba(13,23,44,0.97));
-      color: var(--text);
       min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(242, 140, 40, 0.18), transparent 24%),
+        radial-gradient(circle at top right, rgba(255,255,255,0.08), transparent 22%),
+        linear-gradient(135deg, var(--navy), var(--navy-dark));
     }
 
     .auth-overlay,
@@ -46,9 +50,10 @@
       display: none;
       align-items: center;
       justify-content: center;
+      padding: 24px;
       background: rgba(8, 12, 24, 0.72);
       z-index: 9999;
-      padding: 24px;
+      backdrop-filter: blur(6px);
     }
 
     .auth-overlay {
@@ -59,23 +64,22 @@
       width: 100%;
       max-width: 460px;
       background: var(--white);
-      border-radius: 24px;
-      padding: 30px 26px;
+      border-radius: var(--radius-xl);
+      padding: 34px 28px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+      border-top: 10px solid var(--orange);
       text-align: center;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.22);
-      border-top: 8px solid var(--orange);
     }
 
     .auth-card h2 {
-      margin: 0 0 12px 0;
+      margin: 0 0 12px;
       font-size: 2rem;
       color: var(--navy);
     }
 
     .auth-card p {
-      margin: 0 0 18px 0;
+      margin: 0 0 18px;
       color: var(--muted);
-      font-size: 1rem;
       line-height: 1.5;
     }
 
@@ -87,12 +91,14 @@
       border: 2px solid var(--border);
       border-radius: 12px;
       outline: none;
-      transition: 0.15s ease;
+      transition: 0.2s ease;
+      background: #fff;
     }
 
     .auth-input:focus,
     .search-input:focus {
       border-color: var(--orange);
+      box-shadow: 0 0 0 4px rgba(242, 140, 40, 0.12);
     }
 
     .auth-btn {
@@ -101,70 +107,75 @@
       padding: 15px;
       border: none;
       border-radius: 12px;
-      background: var(--orange);
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
       color: var(--white);
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
     }
 
     .auth-btn:hover {
-      background: var(--orange-dark);
+      opacity: 0.96;
+    }
+
+    .auth-btn:active {
+      transform: scale(0.99);
     }
 
     .auth-error {
       min-height: 22px;
-      color: var(--error-text);
       margin-top: 10px;
+      color: var(--error-text);
       font-size: 14px;
     }
 
     .page {
-      max-width: 980px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 28px 20px;
+      padding: 30px 20px 36px;
     }
 
-    .top-banner {
+    .hero {
       text-align: center;
       color: var(--white);
-      margin-bottom: 18px;
+      margin-bottom: 22px;
     }
 
-    .top-banner h1 {
+    .hero h1 {
       margin: 0;
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       font-weight: bold;
       letter-spacing: 0.2px;
     }
 
-    .top-banner p {
-      margin: 10px 0 0 0;
-      font-size: 1.1rem;
-      color: #d7def0;
+    .hero p {
+      margin: 12px 0 0;
+      font-size: 1.12rem;
+      color: #dbe7ff;
     }
 
-    .card {
-      background: var(--white);
-      border-radius: 24px;
-      padding: 28px;
+    .main-card {
+      background: rgba(255,255,255,0.97);
+      border-radius: 30px;
+      padding: 30px;
       box-shadow: var(--shadow);
-      border-top: 10px solid var(--orange);
+      border-top: 12px solid var(--orange);
     }
 
     .main-instruction {
+      margin: 0;
       text-align: center;
-      font-size: 2.1rem;
+      font-size: 2.4rem;
       font-weight: bold;
       color: var(--navy);
-      margin: 0 0 10px 0;
     }
 
     .sub-instruction {
+      margin: 10px 0 24px;
       text-align: center;
-      font-size: 1.1rem;
+      font-size: 1.08rem;
       color: var(--muted);
-      margin: 0 0 22px 0;
     }
 
     .status {
@@ -175,6 +186,7 @@
       margin-bottom: 18px;
       font-size: 1.08rem;
       border: 2px solid transparent;
+      transition: 0.2s ease;
     }
 
     .status.neutral {
@@ -201,18 +213,28 @@
       border-color: #fecaca;
     }
 
+    .scanner-shell {
+      padding: 16px;
+      border-radius: 24px;
+      background:
+        linear-gradient(180deg, #fffaf5, #f8fbff);
+      border: 2px solid #ebf0f6;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.65);
+    }
+
     #reader {
       width: 100%;
-      min-height: 390px;
-      border-radius: 18px;
+      min-height: 520px;
+      border-radius: 22px;
       overflow: hidden;
-      border: 3px solid #e6ebf2;
+      border: 3px solid #e5ebf3;
       background: #f8fafc;
+      box-shadow: inset 0 0 0 1px rgba(20, 33, 61, 0.03);
     }
 
     .trouble-wrap {
       text-align: center;
-      margin-top: 16px;
+      margin-top: 18px;
     }
 
     .trouble-btn {
@@ -231,7 +253,8 @@
       padding: 16px;
       background: #f8fafc;
       border: 2px solid #e6ebf2;
-      border-radius: 14px;
+      border-radius: 16px;
+      animation: fadeIn 0.18s ease;
     }
 
     .search-panel.show {
@@ -240,7 +263,7 @@
 
     .search-results {
       margin-top: 12px;
-      max-height: 220px;
+      max-height: 240px;
       overflow-y: auto;
     }
 
@@ -249,15 +272,17 @@
       text-align: left;
       background: var(--white);
       border: 2px solid #e5e7eb;
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 13px 14px;
       margin-bottom: 8px;
       cursor: pointer;
+      transition: 0.15s ease;
     }
 
     .result-item:hover {
       border-color: #cbd5e1;
       background: #fafafa;
+      transform: translateY(-1px);
     }
 
     .result-name {
@@ -284,49 +309,59 @@
     }
 
     .simple-help {
-      margin-top: 20px;
+      margin-top: 22px;
       text-align: center;
       color: var(--muted);
       font-size: 1rem;
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
     .overlay.show {
       display: flex;
+      animation: fadeIn 0.18s ease;
     }
 
     .popup {
       width: min(92vw, 900px);
       min-height: 68vh;
       background: var(--white);
-      border-radius: 30px;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+      border-radius: 34px;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.28);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 36px 28px;
+      padding: 42px 30px;
       border-top: 16px solid var(--orange);
+      animation: popIn 0.2s ease;
     }
 
     .popup.success {
-      background: var(--success-bg);
+      background: linear-gradient(180deg, #f6fff9, #ecfdf3);
     }
 
     .popup.error {
-      background: var(--error-bg);
+      background: linear-gradient(180deg, #fff8f8, #fef2f2);
     }
 
     .popup.loading {
-      background: var(--warning-bg);
+      background: linear-gradient(180deg, #fffaf2, #fff7ed);
     }
 
     .popup-icon {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 120px;
+    }
+
+    .popup-icon.success,
+    .popup-icon.error {
       font-size: 8rem;
       line-height: 1;
       font-weight: bold;
-      margin-bottom: 18px;
     }
 
     .popup.success .popup-icon {
@@ -337,24 +372,44 @@
       color: var(--error-text);
     }
 
-    .popup.loading .popup-icon {
-      color: var(--warning-text);
-      font-size: 3rem;
+    .spinner-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .spinner {
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      border: 8px solid rgba(242, 140, 40, 0.18);
+      border-top-color: var(--orange);
+      animation: spin 0.9s linear infinite;
+    }
+
+    .spinner-glow {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(242, 140, 40, 0.14);
+      filter: blur(10px);
+      margin-top: -8px;
     }
 
     .popup-title {
       font-size: 4rem;
       font-weight: bold;
-      margin: 0 0 14px 0;
+      margin: 0 0 14px;
       color: var(--navy);
       line-height: 1.05;
     }
 
     .popup-name {
-      font-size: 2.5rem;
+      font-size: 2.6rem;
       font-weight: bold;
       color: var(--navy);
-      margin: 0 0 18px 0;
+      margin: 0 0 18px;
       line-height: 1.2;
       max-width: 95%;
       word-break: break-word;
@@ -364,7 +419,7 @@
       font-size: 2.2rem;
       font-weight: bold;
       color: var(--navy);
-      margin: 0 0 18px 0;
+      margin: 0 0 18px;
       line-height: 1.25;
       max-width: 95%;
     }
@@ -384,30 +439,51 @@
       font-weight: bold;
     }
 
-    @media (max-width: 800px) {
-      .top-banner h1 {
-        font-size: 2rem;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero h1 {
+        font-size: 2.2rem;
       }
 
       .main-instruction {
-        font-size: 1.75rem;
+        font-size: 2rem;
       }
 
       #reader {
-        min-height: 300px;
+        min-height: 420px;
       }
 
       .popup {
         min-height: 62vh;
-        padding: 28px 20px;
+        padding: 30px 22px;
       }
 
-      .popup-icon {
+      .popup-icon.success,
+      .popup-icon.error {
         font-size: 6rem;
       }
 
       .popup-title {
-        font-size: 2.7rem;
+        font-size: 2.8rem;
       }
 
       .popup-name {
@@ -442,17 +518,20 @@
   </div>
 
   <div class="page">
-    <div class="top-banner">
+    <div class="hero">
       <h1>Student Self Check-In</h1>
+      <p>Quick, simple, and clear for students to use.</p>
     </div>
 
-    <div class="card">
+    <div class="main-card">
       <h2 class="main-instruction">Scan your QR code</h2>
       <p class="sub-instruction">Hold your QR code in front of the camera.</p>
 
       <div id="status" class="status neutral">Point your QR code at the camera</div>
 
-      <div id="reader"></div>
+      <div class="scanner-shell">
+        <div id="reader"></div>
+      </div>
 
       <div class="trouble-wrap">
         <button id="toggleSearchBtn" class="trouble-btn">Having trouble?</button>
@@ -477,7 +556,12 @@
 
   <div id="overlay" class="overlay">
     <div id="popupBox" class="popup loading">
-      <div id="popupIcon" class="popup-icon">Loading...</div>
+      <div id="popupIcon" class="popup-icon">
+        <div class="spinner-wrap">
+          <div class="spinner"></div>
+          <div class="spinner-glow"></div>
+        </div>
+      </div>
       <h2 id="popupTitle" class="popup-title">Checking In</h2>
       <div id="popupName" class="popup-name" style="display:none;"></div>
       <div id="popupMessage" class="popup-message">Please wait...</div>
@@ -578,16 +662,22 @@
 
     function setLoadingPopup() {
       popupBox.className = "popup loading";
-      popupIcon.textContent = "Loading...";
+      popupIcon.innerHTML = `
+        <div class="spinner-wrap">
+          <div class="spinner"></div>
+          <div class="spinner-glow"></div>
+        </div>
+      `;
       popupTitle.textContent = "Checking In";
       popupName.style.display = "none";
-      popupIcon.textContent = "Please wait...";
+      popupMessage.textContent = "Please wait...";
       countdownEl.style.display = "none";
       showOverlay();
     }
 
     function setSuccessPopup(name) {
       popupBox.className = "popup success";
+      popupIcon.textContent = "✓";
       popupTitle.textContent = "Checked In";
       popupName.textContent = name;
       popupName.style.display = "block";
@@ -646,7 +736,7 @@
 
         await scanner.start(
           cameraId,
-          { fps: 10, qrbox: 250 },
+          { fps: 10, qrbox: 300 },
           onScanSuccess,
           () => {}
         );
